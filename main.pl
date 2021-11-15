@@ -1,4 +1,5 @@
 :- include('player.pl').
+:- include('inventory.pl').
 
 writeOpening :-
     write('  _   _                           _   '), nl,
@@ -33,6 +34,7 @@ start :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
     retractall(player_position(_,_)),
     retractall(money(_)),
     retractall(onGoingQuest(_,_,_)),
+    create_quest,
     create_player.
 
     

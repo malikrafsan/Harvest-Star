@@ -65,7 +65,6 @@ create_player :-
     read(X), nl,
     job(X, Job),
     set_player_default(Job),
-    create_quest,
     write_job(Job).
 
 /* List of commands */
