@@ -3,9 +3,9 @@
 :- dynamic(player_job/1).   /* ini ngeset dia jobnya apa */
 :- dynamic(player_inv/3).    /* (list of items, cap, neff) */
 :- dynamic(player_position/2). /* posisinya dalam x,y kali ya */
-:- dynamic(player_gold/1).      /* player_gold(Gold) */
-:- dynamic(player_quest/3 ).   /* misi minimal fishing, farming, ranching, nanti di random generator */
-:- dynamic(player_state/1).  /* sori aku lupa ini buat apa oawkaowk */
+:- dynamic(money/1).      /* money(Gold) */
+:- dynamic(onGoingQuest/3 ).   /* misi minimal fishing, farming, ranching, nanti di random generator */
+:- dynamic(state/1).  /* sori aku lupa ini buat apa oawkaowk */
 
 /* Facts */
 job(1, 'Fisherman').
@@ -25,8 +25,8 @@ set_lvl_default:-
 set_xp_default:-
     asserta(player_xp(0,0,0,0)), !.
 
-set_gold_default:-
-    asserta(player_gold(1000)), !.
+set_money_default:-
+    asserta(money(1000)), !.
 
 set_position_default:-
     asserta(player_position(1,1)), !.
@@ -36,21 +36,21 @@ set_player_default(Job):-
     set_lvl_default,
     set_xp_default,
     set_position_default, 
-    set_gold_default, !. 
+    set_money_default, !. 
 
 /* to get the player's stats in status */
 player(Job, Leveltotal, Level1, Level2, Level3, Xptotal, Xp1, Xp2, Xp3, Gold) :-
     player_job(Job),
     player_lvl(Leveltotal, Level1, Level2, Level3),
     player_xp(Xptotal, Xp1, Xp2, Xp3),
-    player_gold(Gold), !.
+    money(Gold), !.
 
 /* To get random quests */
 create_quest :-
     random(0,6,X),
     random(0,6,Y),
     random(0,6,Z),
-    asserta(player_quest(X,Y,Z)).
+    asserta(onGoingQuest(X,Y,Z)).
 
 /* to create the player */
 write_job(Jobing):-
@@ -109,7 +109,7 @@ d :-
     PosX1 is PosX + 1,
     asserta(player_position(PosX1, PosY)).*/
 
-/* Operations regarding stats and level */
+/* Operations regarding leveling up */
 leveluptot :-
     player_xp(Xtot,Xfish,Xfarm,Xranch),
     player_lvl(Ltot,Lfish,Lfarm,Lranch),
@@ -166,7 +166,7 @@ check_levelupranch:-
     player_xp(_,_,_,X),
     (X >= 100 -> levelupranch, write('Congratulations, your ranching skills leveled up!'), nl , check_levelupranch ; true), !.
 
-
+/* Operations regarding adding xp and money */
 add_xp(X1,X2,X3,X4):-
     player_xp(Xtot, Xfish, Xfarm, Xranch),
     Xtot1 is Xtot + X1,
@@ -180,18 +180,18 @@ add_xp(X1,X2,X3,X4):-
     check_levelupfarm,
     check_levelupranch, !.
 
-add_gold(X):-
-    player_gold(Gold),
+add_money(X):-
+    money(Gold),
     Gold1 is Gold + X,
-    retract(player_gold(_)),
-    asserta(player_gold(Gold1)),
+    retract(money(_)),
+    asserta(money(Gold1)),
     write('Gold: '), write(Gold1), nl, !.
 
-sub_gold(X):-
-    player_gold(Gold),
+sub_money(X):-
+    money(Gold),
     Gold1 is Gold - X,
-    retract(player_gold(_)),
-    asserta(player_gold(Gold1)),
+    retract(money(_)),
+    asserta(money(Gold1)),
     write('Gold: '), write(Gold1), nl, !.
 
 
