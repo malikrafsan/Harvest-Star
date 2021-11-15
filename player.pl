@@ -1,10 +1,9 @@
 :- dynamic(player_lvl/4).   /* player_lvl(Level total, fishing, farming, ranching) */
 :- dynamic(player_xp/4).   /* player_xp(XP total, fishing, farming, ranching). asumsi naik level kalo xp total 300, trus xp job 100 */ 
 :- dynamic(player_job/1).   /* ini ngeset dia jobnya apa */
-:- dynamic(player_inv/3).    /* (list of items, cap, neff) */
 :- dynamic(player_position/2). /* posisinya dalam x,y kali ya */
 :- dynamic(money/1).      /* money(Gold) */
-:- dynamic(onGoingQuest/3 ).   /* misi minimal fishing, farming, ranching, nanti di random generator */
+:- dynamic(onGoingQuest/3).   /* misi minimal fishing, farming, ranching, nanti di random generator */
 :- dynamic(state/1).  /* sori aku lupa ini buat apa oawkaowk */
 
 /* Facts */
@@ -16,7 +15,7 @@ job_ing(2, 'Farming').
 job_ing(3, 'Ranching').
 
 /* Functions to set the player with default stats */
-set_job_default(Job):-
+set_job(Job):-
     asserta(player_job(Job)), !.
 
 set_lvl_default:-
@@ -32,7 +31,7 @@ set_position_default:-
     asserta(player_position(1,1)), !.
 
 set_player_default(Job):-
-    set_job_default(Job),
+    set_job(Job),
     set_lvl_default,
     set_xp_default,
     set_position_default, 
@@ -56,7 +55,7 @@ create_quest :-
 write_job(Jobing):-
     write('You choose '),
     write(Jobing),
-    write(', lets start working'), nl, nl, !.
+    write(', let`s start working'), nl, !.
 
 create_player :-
     write('Welcome to Harvest Star. Choose your job '),nl,
@@ -65,10 +64,9 @@ create_player :-
     write('3. Rancher '),nl,
     read(X), nl,
     job(X, Job),
-    job_ing(X,Jobing),
     set_player_default(Job),
     create_quest,
-    write_job(Jobing).
+    write_job(Job).
 
 /* List of commands */
 status:-
@@ -76,10 +74,10 @@ status:-
     write('Your status: '), nl,
     write('Job: '), write(Job), nl,
     write('Level: '), write(Leveltotal), nl,
-    write('Level farming: '), write(Level1), nl,
-    write('EXP farming: '), write(Xp1), nl,
-    write('Level fishing: '), write(Level2), nl,
-    write('EXP fishing: '), write(Xp2), nl,
+    write('Level farming: '), write(Level2), nl,
+    write('EXP farming: '), write(Xp2), nl,
+    write('Level fishing: '), write(Level1), nl,
+    write('EXP fishing: '), write(Xp1), nl,
     write('Level ranching: '), write(Level3), nl,
     write('EXP ranching: '), write(Xp3), nl,
     write('EXP: '), write(Xptotal), write('/'), write('300'), nl,
