@@ -124,7 +124,7 @@ throwItemequipment(Name) :-
     write("How many "), write(Name), write(" do you want to throw?"),
     read(X), nl,
     (X > Qty -> write('You don`t have enough '), write(Name), write(', canceling...'), nl ;
-    delItemNtimes(Name,X)).
+    delEquipmentNtimes(Name,X)).
 
 throwItem :- 
     inventory, nl,
