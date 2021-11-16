@@ -14,29 +14,6 @@ job_ing(1, 'Fishing').
 job_ing(2, 'Farming'). 
 job_ing(3, 'Ranching').
 
-/* Functions to set the player with default stats */
-set_job(Job):-
-    asserta(player_job(Job)), !.
-
-set_lvl_default:-
-    asserta(player_lvl(1,1,1,1)), !.
-
-set_xp_default:-
-    asserta(player_xp(0,0,0,0)), !.
-
-set_money_default:-
-    asserta(money(1000)), !.
-
-set_position_default:-
-    asserta(player_position(1,1)), !.
-
-set_player_default(Job):-
-    set_job(Job),
-    set_lvl_default,
-    set_xp_default,
-    set_position_default, 
-    set_money_default, !. 
-
 /* to get the player's stats in status */
 player(Job, Leveltotal, Level1, Level2, Level3, Xptotal, Xp1, Xp2, Xp3, Gold) :-
     player_job(Job),
@@ -44,12 +21,13 @@ player(Job, Leveltotal, Level1, Level2, Level3, Xptotal, Xp1, Xp2, Xp3, Gold) :-
     player_xp(Xptotal, Xp1, Xp2, Xp3),
     money(Gold), !.
 
-/* To get random quests */
-create_quest :-
-    random(0,6,X),
-    random(0,6,Y),
-    random(0,6,Z),
-    asserta(onGoingQuest(X,Y,Z)).
+/* Functions to set the player with default stats */
+set_player_default(Job):-
+    asserta(player_job(Job)),
+    asserta(player_lvl(1,1,1,1)), 
+    asserta(player_xp(0,0,0,0)), 
+    asserta(player_position(1,1)), 
+    asserta(money(1000)), !.
 
 /* to create the player */
 write_job(Jobing):-
@@ -81,30 +59,6 @@ status:-
     write('EXP ranching: '), write(Xp3), nl,
     write('EXP: '), write(Xptotal), write('/'), write('300'), nl,
     write('Gold: '), write(Gold), nl, nl, !.
-
-/*w :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosY1 is PosY + 1,
-    asserta(player_position(PosX, PosY1)).
-
-a :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosX1 is PosX - 1,
-    asserta(player_position(PosX1, PosY)).
-
-s :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosY1 is PosY - 1,
-    asserta(player_position(PosX, PosY1)).
-
-d :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosX1 is PosX + 1,
-    asserta(player_position(PosX1, PosY)).*/
 
 /* Operations regarding leveling up */
 leveluptot :-
@@ -190,5 +144,36 @@ sub_money(X):-
     retract(money(_)),
     asserta(money(Gold1)),
     write('Gold: '), write(Gold1), nl, !.
+
+/* To get random quests */
+create_quest :-
+    random(0,6,X),
+    random(0,6,Y),
+    random(0,6,Z),
+    asserta(onGoingQuest(X,Y,Z)).
+
+/*w :-
+    player_position(PosX, PosY),
+    retractall(player_position(_, _)),
+    PosY1 is PosY + 1,
+    asserta(player_position(PosX, PosY1)).
+
+a :-
+    player_position(PosX, PosY),
+    retractall(player_position(_, _)),
+    PosX1 is PosX - 1,
+    asserta(player_position(PosX1, PosY)).
+
+s :-
+    player_position(PosX, PosY),
+    retractall(player_position(_, _)),
+    PosY1 is PosY - 1,
+    asserta(player_position(PosX, PosY1)).
+
+d :-
+    player_position(PosX, PosY),
+    retractall(player_position(_, _)),
+    PosX1 is PosX + 1,
+    asserta(player_position(PosX1, PosY)).*/
 
 

@@ -1,5 +1,6 @@
 :- include('player.pl').
 :- include('inventory.pl').
+:- include('items.pl').
 
 writeOpening :-
     write('  _   _                           _   '), nl,
@@ -27,15 +28,17 @@ startGame :-
     writeOpening, nl,
     help.
 
-start :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
+start :- 
+    resetAll,
+    create_quest, /* Ada di player.pl paling bawah kalo kepo */
+    create_player.
+
+resetAll :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
     retractall(player_lvl(_,_,_,_)),
     retractall(player_xp(_,_,_,_)),
     retractall(player_job(_)),
     retractall(player_position(_,_)),
     retractall(money(_)),
-    retractall(onGoingQuest(_,_,_)),
-    create_quest,
-    create_player.
-
+    retractall(onGoingQuest(_,_,_)).
     
 
