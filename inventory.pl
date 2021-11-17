@@ -33,7 +33,7 @@ inventory :-
     inventoryitem.
 
 /* To add item or equipment to the inventory*/
-addItem(_) :- /* Inventory is, so fail. */
+addItem(_) :- /* Inventory is full, so fail. */
     inventoryNeff(Neff),
     (Neff >= 100),
     write('Inventory is full!'), nl, !, fail.
@@ -112,6 +112,7 @@ delEquipmentNtimes(_, 0) :- !.
 delEquipmentNtimes(Name, N) :- 
     delEquipment(Name), N1 is N - 1, delEquipmentNtimes(Name, N1).
 
+/* command throwItem seperti pada spek tubes */
 throwItemitem(Name) :- 
     player_invitem(Name,Qty),
     write("How many "), write(Name), write(" do you want to throw?"),

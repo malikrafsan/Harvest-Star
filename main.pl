@@ -1,5 +1,5 @@
 :- include('player.pl').
-:- include('inventory.pl').
+:- include('inventoryver2.pl').
 :- include('items.pl').
 
 writeOpening :-
