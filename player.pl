@@ -1,10 +1,7 @@
 :- dynamic(player_lvl/4).   /* player_lvl(Level total, fishing, farming, ranching) */
 :- dynamic(player_xp/4).   /* player_xp(XP total, fishing, farming, ranching). asumsi naik level kalo xp total 300, trus xp job 100 */ 
 :- dynamic(player_job/1).   /* ini ngeset dia jobnya apa */
-:- dynamic(player_position/2). /* posisinya dalam x,y kali ya */
 :- dynamic(money/1).      /* money(Gold) */
-:- dynamic(onGoingQuest/3).   /* misi minimal fishing, farming, ranching, nanti di random generator */
-:- dynamic(state/1).  /* sori aku lupa ini buat apa oawkaowk */
 
 /* Facts */
 job(1, 'Fisherman').
@@ -26,7 +23,6 @@ set_player_default(Job):-
     asserta(player_job(Job)),
     asserta(player_lvl(1,1,1,1)), 
     asserta(player_xp(0,0,0,0)), 
-    asserta(player_position(1,1)), 
     asserta(money(1000)), !.
 
 /* to create the player */
@@ -35,7 +31,7 @@ write_job(Jobing):-
     write(Jobing),
     write(', let`s start working'), nl, !.
 
-create_player :-
+initPlayer :-
     write('Welcome to Harvest Star. Choose your job '),nl,
     write('1. Fisherman '),nl,
     write('2. Farmer '),nl,
@@ -44,6 +40,12 @@ create_player :-
     job(X, Job),
     set_player_default(Job),
     write_job(Job).
+
+resetPlayer :-
+    retractall(player_lvl(_,_,_,_)),
+    retractall(player_xp(_,_,_,_)),
+    retractall(player_job(_)),
+    retractall(money(_)).
 
 /* List of commands */
 status:-
@@ -145,36 +147,3 @@ sub_money(X):-
     retract(money(_)),
     asserta(money(Gold1)),
     write('Gold: '), write(Gold1), nl, !.
-
-/* To get random quests */
-create_quest :-
-    random(0,6,X),
-    random(0,6,Y),
-    random(0,6,Z),
-    asserta(onGoingQuest(X,Y,Z)).
-
-/*w :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosY1 is PosY + 1,
-    asserta(player_position(PosX, PosY1)).
-
-a :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosX1 is PosX - 1,
-    asserta(player_position(PosX1, PosY)).
-
-s :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosY1 is PosY - 1,
-    asserta(player_position(PosX, PosY1)).
-
-d :-
-    player_position(PosX, PosY),
-    retractall(player_position(_, _)),
-    PosX1 is PosX + 1,
-    asserta(player_position(PosX1, PosY)).*/
-
-

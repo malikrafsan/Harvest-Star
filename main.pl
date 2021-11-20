@@ -1,6 +1,15 @@
-:- include('player.pl').
-:- include('inventoryver2.pl').
+:- dynamic(state/1).  /* State Machine */
+
+/* Facts */
 :- include('items.pl').
+/* Systems and Dynamics */
+:- include('player.pl').
+:- include('map.pl').
+:- include('inventoryver2.pl').
+/* Gameplay */
+:- include('exploration.pl').
+:- include('quest.pl').
+:- include('fishing.pl').
 
 writeOpening :-
     write('  _   _                           _   '), nl,
@@ -30,15 +39,12 @@ startGame :-
 
 start :- 
     resetAll,
-    create_quest, /* Ada di player.pl paling bawah kalo kepo */
-    create_player.
+    initAll.
+
+initAll :-
+    initPlayer,
+    initMap.
 
 resetAll :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
-    retractall(player_lvl(_,_,_,_)),
-    retractall(player_xp(_,_,_,_)),
-    retractall(player_job(_)),
-    retractall(player_position(_,_)),
-    retractall(money(_)),
-    retractall(onGoingQuest(_,_,_)).
-    
-
+    resetPlayer,
+    resetQuest.

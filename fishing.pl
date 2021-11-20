@@ -1,20 +1,7 @@
-:- dynamic(player_xp/4). 
-:- dynamic(player_position/2).
 :- dynamic(fish_items/2).
-
-map_object(1,0,'o').
-map_object(1,1,'o').
-map_object(2,1,'o').
-map_object(2,2,'o').
 
 fish_list([tuna, salmon, catfist, eel, clownfish, shark]).
 fish_list_length(6).
-
-init_xp:-
-    asserta(player_xp(0,0,0,0)), !.
-
-init_pos:-
-    asserta(player_position(0,0)).
 
 startFishing:-
     init_pos,
@@ -22,8 +9,7 @@ startFishing:-
     write('welcome!'),nl.
 
 isTiles(X,Y):-
-    map_object(X,Y,Z),
-    Z = 'o'.
+    map_object('o',X,Y).
 
 canFish:-
     player_position(X,Y),
@@ -63,7 +49,7 @@ takeFish :-
     write(' with quantity: '), write(Qty), nl.
 
 cantFishMsg :-
-    write('you can not fish here').
+    write('You can\'t fishing here').
 
 fish:-
     canFish -> takeFish
