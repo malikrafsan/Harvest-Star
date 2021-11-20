@@ -118,12 +118,13 @@ check_levelupranch:-
     (X >= 100 -> levelupranch, write('Congratulations, your ranching skills leveled up!'), nl , check_levelupranch ; true), !.
 
 /* Operations regarding adding xp and money */
-add_xp(X1,X2,X3,X4):-
+add_xp(X2,X3,X4):-
     player_xp(Xtot, Xfish, Xfarm, Xranch),
-    Xtot1 is Xtot + X1,
-    Xfish1 is Xfish + X2,
-    Xfarm1 is Xfarm + X3,
-    Xranch1 is Xranch + X4,
+    player_job(Job),
+    (Job = 'Fisherman', Xfish1 is round(1.5*(Xfish + X2)), Xfarm1 is Xfarm + X3, Xranch1 is Xranch + X4;
+    Job = 'Farmer', Xfish1 is Xfish + X2, Xfarm1 is round(1.5*(Xfarm + X3)), Xranch1 is Xranch + X4;
+    Job = 'Rancher', Xfish1 is Xfish + X2, Xfarm1 is Xfarm + X3, Xranch1 is round(1.5*(Xranch + X4))),
+    Xtot1 is Xtot + X2 + X3 + X4,
     retract(player_xp(_,_,_,_)),
     asserta(player_xp(Xtot1,Xfish1,Xfarm1,Xranch1)),
     check_leveluptot,
