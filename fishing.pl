@@ -17,7 +17,6 @@ init_pos:-
     asserta(player_position(0,0)).
 
 startFishing:-
-    % resetFishing,
     init_pos,
     init_xp,
     write('welcome!'),nl.
@@ -44,16 +43,24 @@ indexOf([Head|Tail],Idx,Elmt):-
   indexOf(Tail, Idx1, Res),
   Elmt = Res.
 
+addItem(Item, Qty) :-
+    fish_items(Item, X),
+    retract(fish_items(Item,Y)),
+    NewQty is X + Qty,
+    assertz(fish_items(Item, NewQty)),!
+    ;
+    assertz(fish_items(Item, Qty)).
+
 takeFish :-
     fish_list(X),
     fish_list_length(Length),
     random(0,Length,Idx),
     indexOf(X,Idx,Elmt),
-    random(1,11,Lvl),
-    assertz(fish_items(Elmt,Lvl)),
+    random(1,10,Qty),
+    addItem(Elmt,Qty),
     write('You got a '),
     write(Elmt),
-    write(' with level: '), write(Lvl), nl.
+    write(' with quantity: '), write(Qty), nl.
 
 cantFishMsg :-
     write('you can not fish here').
