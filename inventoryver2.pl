@@ -71,18 +71,24 @@ delItemNtimes(Name, N) :-
 /* command throwItem seperti pada spek tubes */
 itemdibuang(Name) :- 
     player_inv(Name,Qty),
-    write("How many "), write(Name), write(" do you want to throw?"),
+    write('How many '), write(Name), write(' do you want to throw?'), nl,
     read(X), nl,
-    (X > Qty -> write('You don`t have enough '), write(Name), write(', canceling...'), nl ;
+    (X > Qty , write('You don`t have enough '), write(Name), write(', cancelling...'), nl ;
     delItemNtimes(Name,X)).
 
 throwItem :- 
     inventory, nl,
     write('What do you want to throw?'), nl,
-    read(Name), nl,
-    (player_inv(Name,_) -> itemdibuang(Name) ; 
-    write('Item not in inventory, canceling.....')).
+    read(X), sinonim(Name,X), nl,
+    (\+player_inv(Name,_), write('Item not in inventory, cancelling.....'), !;
+    itemdibuang(Name)).
 
+giveDefaultItems :- 
+    addItemNtimes('Training Fishing Rod',1),
+    addItemNtimes('Egg',5),
+    addItemNtimes('Rusty Shovel',1),
+    addItemNtimes('Carrot',5),
+    addItemNtimes('Snapper',3).
 
 /* addItem('Rusty Shovel').
 addItem('Iron Shovel').

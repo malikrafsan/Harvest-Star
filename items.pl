@@ -20,7 +20,34 @@ item('Crab', 'Fish', 200).
 item('Egg', 'Livestock', 100).
 item('Milk', 'Livestock', 200).
 item('Wool', 'Livestock', 150).
+item('Potion', _ , 1000).
 
-
+sinonim('Rusty Shovel', rustyshovel).
+sinonim('Iron Shovel', ironshovel).
+sinonim('Steel Shovel', steelshovel).
+sinonim('Training Fishing Rod', trainingfishingrod).
+sinonim('Quality Fishing Rod', qualityfishingrod).
+sinonim('Pro Fishing Rod', profishingrod).
+sinonim('Carrot', carrot).
+sinonim('Wheat', wheat).
+sinonim('Potato', potato).
+sinonim('Tomato', tomato).
+sinonim('Snapper', snapper).
+sinonim('Catfish', catfish).
+sinonim('Crab', crab).
+sinonim('Egg', egg).
+sinonim('Milk', milk).
+sinonim('Wool', wool).
+sinonim('Potion', potion).
 
 /* Still dont know the use of each items and equipments tho */
+
+usePotion :-
+    \+player_inv('Potion', _),
+    write('You dont have enough Potion!') , nl.
+
+usePotion:-
+    player_inv('Potion', _),
+    write('You have used Potion'), nl,
+    delItem('Potion'),
+    add_xp(80,80,80), nl.
