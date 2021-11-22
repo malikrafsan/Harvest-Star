@@ -6,10 +6,13 @@
 :- include('player.pl').
 :- include('map.pl').
 :- include('inventoryver2.pl').
+:- include('world.pl').
 /* Gameplay */
 :- include('exploration.pl').
 :- include('quest.pl').
 :- include('fishing.pl').
+:- include('marketplace.pl').
+:- include('house.pl').
 
 writeOpening :-
     write('  _   _                           _   '), nl,

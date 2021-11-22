@@ -10,6 +10,11 @@ equipment('Training Fishing Rod', 1, 'Fish', 0).
 equipment('Quality Fishing Rod', 2, 'Fish', 500).
 equipment('Pro Fishing Rod', 3, 'Fish', 1000).
 
+item('Carrot Seeds', 'Seeds', 20).
+item('Wheat Seeds', 'Seeds', 40).
+item('Potato Seeds', 'Seeds', 30).
+item('Tomato Seeds', 'Seeds', 50).
+
 item('Carrot', 'Harvest', 100).
 item('Wheat', 'Harvest', 100).
 item('Potato', 'Harvest', 150).
