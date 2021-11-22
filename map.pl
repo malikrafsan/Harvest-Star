@@ -1,5 +1,5 @@
 :- dynamic(map_object/3).
-:- dynamic(map_harvest/3).
+:- dynamic(map_harvest/4).
 :- dynamic(player_position/2). /* posisinya dalam x,y kali ya */
 
 /*  Building/map object can be
@@ -37,7 +37,7 @@ initMap :-
 
 resetMap :-
     retractall(map_object(_,_,_)),
-    retractall(map_harvest(_,_,_)),
+    retractall(map_harvest(_,_,_,_)),
     retractall(player_position(_,_)).
 
 /* Check if player in a specific Object */
@@ -48,7 +48,7 @@ isInObject(Object) :-
 /* Check if player in a harvest tile */
 isInHarvest(Harvest) :-
     player_position(X,Y),
-    map_harvest(Harvest, X, Y).
+    map_harvest(Harvest, _, X, Y).
 
 /* Check if player in an empty tile */
 isEmptyTile :-
@@ -62,7 +62,7 @@ isInMap(X,Y) :-
     Y >= 0,
     Y < YMax.
 
-writeMap(XMax, YMax, X, Y) :-
+displayMap(XMax, YMax, X, Y) :-
     Y =< YMax, X =< XMax,
     ((Y == -1, !; Y == YMax), !, (
         write('#')
@@ -80,8 +80,8 @@ writeMap(XMax, YMax, X, Y) :-
         YN = Y,
         XN is X + 1
     )),
-    writeMap(XMax, YMax, XN, YN).
+    displayMap(XMax, YMax, XN, YN).
 
 map :-
     map_size(XMax, YMax),
-    writeMap(XMax, YMax, -1, -1).
+    displayMap(XMax, YMax, -1, -1).
