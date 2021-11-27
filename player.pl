@@ -24,7 +24,8 @@ set_player_default(Job):-
     asserta(player_lvl(1,1,1,1)), 
     asserta(player_xp(0,0,0,0)), 
     asserta(money(1000)),
-    giveDefaultItems, !.
+    giveDefaultItems,  
+    asserta(state(outside)),!.
 
 /* to create the player */
 write_job(Jobing):-

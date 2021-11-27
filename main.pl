@@ -46,8 +46,34 @@ start :-
 
 initAll :-
     initPlayer,
-    initMap.
+    initMap,
+    initWorld. 
 
 resetAll :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
     resetPlayer,
-    resetQuest.
+    resetQuest,
+    resetWorld. 
+
+
+exit :-
+  \+ state(outside),
+  retract(state(_)),
+  asserta(state(outside)),
+  write('You go outside.'),nl.
+
+
+/* Helper Input */
+read_until_end(Output) :-
+    get_char(Char),
+    (
+     Char = '.' -> Output=''
+    ;
+     (
+       read_until_end(NOutput),
+       atom_concat(Char, NOutput, Output)
+     )
+    ).
+
+read_string(Line) :-
+    write('| ?- '),
+    read_until_end(Line).

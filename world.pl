@@ -1,12 +1,18 @@
 :- dynamic(world/3).
+:- dynamic(time/1).
 
 season(1, 'Spring').
 season(2, 'Summer').
 season(3, 'Fall').
 season(4, 'Winter').
 
-% main :-
-%   asserta(world(29,'Spring', 'Sunny')).
+resetWorld :-
+  retractall(world(_,_,_)),
+  retractall(time(_)).
+
+initWorld :-
+  asserta(world(1,'Spring', 'Sunny')),
+  asserta(time(0)).
 
 addDay :-
   world(_date, _season, _weather),
@@ -22,6 +28,8 @@ addDay :-
   (Y =< S, _weather1 = 'Sunny', !;
    Y =< SR, _weather1 = 'Rainy', !;
    Y =< SRW, _weather1 = 'Snowy'),
+  % TODO: update harvest time
+  % TODO: Update Ranch time
   % Assign world 
   retract(world(_,_,_)),
   asserta(world(_date1,_season1,_weather1)).
@@ -31,3 +39,13 @@ fail_state :-
   write('Setelah 1 tahun berlalu, kamu tidak bisa mendapatkan kemakmuran yang kau incar\n'),
   write('Kamu tetap hidup dalam kesengsaraan.\n').
   % TODO: reset game
+
+
+addTime(Time) :-
+  retract(time(X)),
+  X1 is Time + X,
+  (
+    X1 < 240, asserta(time(X1)),!;
+    addDay,
+    asserta(time(0)).
+  ).

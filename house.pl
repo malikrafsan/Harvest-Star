@@ -1,9 +1,4 @@
-:- include('world.pl').
 :- dynamic(state/1).
-
-main :-
-  asserta(state(outside)),
-  asserta(world(29,'Winter', 'Sunny')).
 
 house :-
   % TODO: cek posisi di house
@@ -20,7 +15,7 @@ house :-
 sleep :-
   state(inHouse),!,
   write('You went to sleep.\n\n'),
-  (addDay,
+  (addTime(240),
   world(_date, _season, _weather),
   write('Day '), write(_date), write('\n'),
   write('Season : '), write(_season), write('\n'),
@@ -31,9 +26,3 @@ sleep :-
 
 sleep :-
   write('You can\'t sleep outside your house.\n').
-
-exit :-
-  state(inHouse),
-  retract(state(inHouse)),
-  asserta(state(outside)),
-  write('You go outside the house.\n').
