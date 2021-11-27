@@ -23,7 +23,8 @@ set_player_default(Job):-
     asserta(player_job(Job)),
     asserta(player_lvl(1,1,1,1)), 
     asserta(player_xp(0,0,0,0)), 
-    asserta(money(1000)), !.
+    asserta(money(1000)),
+    giveDefaultItems, !.
 
 /* to create the player */
 write_job(Jobing):-
@@ -138,12 +139,10 @@ add_money(X):-
     money(Gold),
     Gold1 is Gold + X,
     retract(money(_)),
-    asserta(money(Gold1)),
-    write('Gold: '), write(Gold1), nl, !.
+    asserta(money(Gold1)).
 
 sub_money(X):-
     money(Gold),
     Gold1 is Gold - X,
     retract(money(_)),
-    asserta(money(Gold1)),
-    write('Gold: '), write(Gold1), nl, !.
+    asserta(money(Gold1)).
