@@ -31,7 +31,7 @@ set_player_default(Job):-
 write_job(Jobing):-
     write('You choose '),
     write(Jobing),
-    write(', let`s start working'), nl, !.
+    write(', let\'s start working'), nl, !.
 
 initPlayer :-
     write('Welcome to Harvest Star. Choose your job '),nl,
@@ -139,8 +139,8 @@ add_xp(X2,X3,X4):-
 add_money(X):-
     money(Gold),
     Gold1 is Gold + X,
-    retract(money(_)),
-    asserta(money(Gold1)).
+    (Gold1 >= 20000 -> goal_state;
+    retract(money(_)), asserta(money(Gold1))).
 
 sub_money(X):-
     money(Gold),

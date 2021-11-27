@@ -40,6 +40,11 @@ fail_state :-
   write('Kamu tetap hidup dalam kesengsaraan.\n').
   % TODO: reset game
 
+goal_state :-
+  write('Selamat! kamu berhasil mendapatkan uang yang cukup untuk melunasi hutang.'), nl,
+  write('Dengan ini, kamu dapat beristirahat kembali dengan tenang :D'), nl.
+  % TODO: reset game
+
 
 addTime(Time) :-
   retract(time(X)),
@@ -47,5 +52,5 @@ addTime(Time) :-
   (
     X1 < 240, asserta(time(X1)),!;
     addDay,
-    asserta(time(0)).
+    asserta(time(0))
   ).

@@ -27,6 +27,24 @@ item('Milk', 'Livestock', 200).
 item('Wool', 'Livestock', 150).
 item('Potion', _ , 1000).
 
+plural('Rusty Shovel', 'Rusty Shovels').
+plural('Iron Shovel', 'Iron Shovels').
+plural('Steel Shovel', 'Steel Shovels').
+plural('Training Fishing Rod', 'Training Fishing Rods').
+plural('Quality Fishing Rod', 'Quality Fishing Rods').
+plural('Pro Fishing Rod', 'Pro Fishing Rods').
+plural('Carrot', 'Carrots').
+plural('Wheat', 'Wheats').
+plural('Potato', 'Potatoed').
+plural('Tomato', 'Tomatoes').
+plural('Snapper', 'Snappers').
+plural('Catfish', 'Catfishes').
+plural('Crab', 'Crabs').
+plural('Egg', 'Eggs').
+plural('Milk', 'Milks').
+plural('Wool', 'Wools').
+plural('Potion', 'Potions').
+
 sinonim('Rusty Shovel', rustyshovel).
 sinonim('Iron Shovel', ironshovel).
 sinonim('Steel Shovel', steelshovel).

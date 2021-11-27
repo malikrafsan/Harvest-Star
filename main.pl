@@ -5,8 +5,9 @@
 /* Systems and Dynamics */
 :- include('player.pl').
 :- include('map.pl').
-:- include('inventoryver2.pl').
+:- include('inventory.pl').
 :- include('world.pl').
+:- include('diary.pl').
 /* Gameplay */
 :- include('exploration.pl').
 :- include('quest.pl').
