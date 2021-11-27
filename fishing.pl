@@ -1,15 +1,23 @@
+% COMMANDS
+fish:-
+    canFish -> takeFish
+    ;write('You can\'t fishing here').
+
+% FACTS AND RULES
 fish_list(['Tuna', 'Salmon', 'Catfist', 'Eel', 'Crab', 'Snapper']).
 fish_list_length(6).
 upperLimitXP(11).
 upperLimitFishermanXP(21).
 defaultChance(1000).
 thresholdChance(500).
-getFishChange(500).
 
 isTiles(X,Y):-
+    % Mengembalikan true jika posisi X Y merupakan tiles air
     map_object('o',X,Y).
 
-canFish:-
+canFish :-
+    % Mengembalikan true jika player bisa memancing
+    state(outside),
     player_position(X,Y),
     X1 is X - 1,
     Y1 is Y - 1,
@@ -22,6 +30,7 @@ canFish:-
         ;isTiles(X,Y2)
     ).
 
+% Mencari elemen dalam list pada index tertentu
 indexOf([Head|Tail],0,Head) :- !.
 indexOf([Head|Tail],Idx,Elmt):-
     Idx > 0,
@@ -30,9 +39,11 @@ indexOf([Head|Tail],Idx,Elmt):-
     Elmt = Res.
 
 isPlayerFisher :-
+    % Mengembalikan true jika player adalah pemancing
     player_job('Fisherman').
 
 addFishXP :-
+    % Menambahkan XP pada player sesuai job
     (
         isPlayerFisher, 
         upperLimitFishermanXP(Limit), 
@@ -46,19 +57,16 @@ addFishXP :-
     write(X),
     write(' fishing exp!'),nl.
 
-accumulatePriceLvl([],[], 0).
-accumulatePriceLvl([HPrice|TPrice],[HLvl|TLvl],Sum) :-
-    accumulatePriceLvl(TPrice,TLvl,Sum1),
-    Sum is Sum1 + (HPrice * HLvl).
-
 getChance(Chance) :-
-    findall(Price,equipment(Name,Lvl,'Fish',Price),BagPrice),
-    findall(Lvl,equipment(Name,Lvl,'Fish',Price),BagLvl),
-    accumulatePriceLvl(BagPrice,BagLvl, Res),
-    Chance is Res;
+    % Menentukan chance tambahan player mendapatkan ikan berdasarkan equipment 
+    player_inv(Name,_),
+    equipment(Name,Lvl,'Fish',Price),
+    Chance is Lvl * Price
+    ,!;
     Chance is 0.
 
 isGotFish :-
+    % Mengembalikan true jika player mendapatkan ikan sesuai chance dan threshold
     defaultChance(Chance),
     getChance(ChanceEquipment),
     TotalChance is Chance + ChanceEquipment,
@@ -67,6 +75,7 @@ isGotFish :-
     X >= Threshold.
 
 takeFish :-
+    % Melakukan fishing dan menambahkan XP pada player
     fish_list(X),
     fish_list_length(Length),
     (
@@ -82,9 +91,4 @@ takeFish :-
         write('You didn\'t get anything!'),nl
     ),
     addFishXP.
-
-fish:-
-    canFish -> takeFish
-    ;
-    write('You can\'t fishing here').
 
