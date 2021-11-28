@@ -1,107 +1,159 @@
-:- dynamic(map_object/3).
-:- dynamic(player_position/2).
-:- dynamic(seed_inventory/2).
-:- dynamic(map_harvest/4).
-:- dynamic(harvest_inventory/1).
-
-map_object(1,2,'A').
-map_object(1,3,'D').
-map_object(2,2,'C').
-map_object(1,1,'B').
-
-digTileSymbol('=').
-harvest(corn,'c').
-harvest(wheat,'w').
-harvest(tomato,'t').
-harvest(potato,'p').
-
-init:-
-    asserta(player_position(9,1)),
-    asserta(seed_inventory(tomato,2)),
-    asserta(seed_inventory(corn,1)). 
-
-isNotEmptyTile :-
-    player_position(X,Y),
-    map_object(X,Y,O)
-    ;
-    map_harvest(X,Y,S,H).
-
-cantDigMsg :-
-    write('you can\'t dig here\n').
-
-doDig :-
-    player_position(X,Y),
-    digTileSymbol(S),
-    assertz(map_harvest(X,Y,S,-1)), 
-    write('you dig the tile\n').
-
+% COMMANDS
 dig :-
+    % Melakukan command dig sesuai validasi
     isNotEmptyTile, 
     write('you can\'t dig here\n'),!
     ;
     doDig.
 
-cantPlantMsg :-
-    write('you can\'t plant here\n').
-
-changeTilesHarvest(Harvest) :-
-    player_position(X,Y),
-    harvest(Harvest,S),
-    random(1,10,R),
-    retract(map_harvest(X,Y,_,_)),
-    assertz(map_harvest(X,Y,S,R)).
-
-doPlant(X) :-
-    retract(seed_inventory(X,N)),(
-        changeTilesHarvest(X),
-        nl,write('You planted a '),
-        write(X), write(' seed.\n'),
-        N1 is N-1,
-        (N1 = 0,
-        !;
-        assertz(seed_inventory(X,N1)))
-    ),!;
-    write('your input is invalid').
-
-planting :-
-    write('You have: '),nl,
-    forall(seed_inventory(Name,Qty),(
-        write('-   '),write(Qty),write(' '),write(Name),nl
-    )),
-    write('What do you want to plant?'),nl,
-    read(X),
-    doPlant(X).
-
 plant :-
+    % Melakukan command plant sesuai validasi
     player_position(X,Y),
-    digTileSymbol(S),
-    map_harvest(X,Y,S,Z),
-    planting,!
-    ;
-    cantPlantMsg.
-    
-updateHarvestTime :-
-    forall((map_harvest(X,Y,Symbol,HarvestTime)),(
-        retract(map_harvest(X,Y,Symbol,HarvestTime)),
-        HarvestTime = 0, 
-        assertz(map_harvest(X,Y,Symbol,0)),!
-        ;
-        NewHarvestTime is HarvestTime-1,
-        assertz(map_harvest(X,Y,Symbol,NewHarvestTime))
-    )).
-
-addHarvestItem(Symbol) :-
-    harvest(Item,Symbol),
-    assertz(harvest_inventory(Item)).
+    (
+        map_harvest('=',X,Y,Z), planting
+        ,!;
+        write('you can\'t plant here\n')        
+    ).
 
 harvest :-
+    % Melakukan command harvest sesuai validasi
     player_position(X,Y),
-    map_harvest(X,Y,Symbol,HarvestTime),
+    map_harvest(Symbol,X,Y,HarvestTime),
     (
         HarvestTime = 0,
         addHarvestItem(Symbol),
-        retract(map_harvest(X,Y,Symbol,HarvestTime)),
-        !;
+        retract(map_harvest(Symbol,X,Y,HarvestTime)),
+        addFarmXP
+        ,!;
         write('Your plant is not ready to be harvested')   
     ),!;
     write('You are not in harvest place').
+
+
+% FACTS AND RULES
+harvest(carrot,'c').
+harvest(wheat,'w').
+harvest(tomato,'t').
+harvest(potato,'p').
+seedItem('Carrot Seeds', carrot).
+seedItem('Wheat Seeds', wheat).
+seedItem('Tomato Seeds', tomato).
+seedItem('Potato Seeds', potato).
+harvestItem('Carrot', carrot).
+harvestItem('Wheat', wheat).
+harvestItem('Tomato', tomato).
+harvestItem('Potato', potato).
+limitDayHarvest(10).
+upperLimitNormalXPFarm(11).
+upperLimitFarmerXPFarm(21).
+
+initHarvest:- % FOR TESTING ONLY
+    addItemNtimes('Carrot Seeds',4),
+    addItemNtimes('Wheat Seeds',1),
+    addItemNtimes('Tomato Seeds',10),
+    addItemNtimes('Potato Seeds',2).
+
+isNotEmptyTile :-
+    % Mengembalikan true jika posisi player merupakan posisi gedung atau tanaman
+    player_position(X,Y),
+    (
+        map_object(O,X,Y)
+        ;map_harvest(S,X,Y,H)
+    ).
+
+doDig :-
+    % Melakukan dig ke tiles tanah dan mengubah map
+    player_position(X,Y),
+    assertz(map_harvest('=',X,Y,-1)), 
+    write('you dig the tile\n').
+
+changeTilesHarvest(Harvest) :-
+    % Mengubah tiles map menjadi simbol tanaman
+    player_position(X,Y),
+    harvest(Harvest,S),
+    limitDayHarvest(Limit),
+    (
+        player_inv(Name,_),
+        equipment(Name,Lvl,'Harvest',Price)
+        ,!;
+        Lvl is 1
+    ),
+    Max is Limit // Lvl,
+    random(1,Max,R),
+    retract(map_harvest(_,X,Y,_)),
+    assertz(map_harvest(S,X,Y,R)).
+
+doPlant(X) :-
+    % Melakukan penanaman sesuai parameter dan mengurangi jumlah pada inventory
+    seedItem(Name,X),
+    (
+        delItem(Name),
+        changeTilesHarvest(X),
+        nl,write('You planted a '),
+        write(X), write(' seed.\n')
+    ),!;
+    write('your input is invalid').
+
+hasSeed :-
+    % Mengembalikan true jika player memiliki seed
+    player_inv(Name,Qty),
+    item(Name,'Seeds',Price),!.
+
+planting :-
+    % Melakukan penanaman berdasarkan input user
+    hasSeed,
+    (
+        write('You have: '),nl,
+        forall(player_inv(Name,Qty),(
+            item(Name,'Seeds',Price),
+            seedItem(Name,RealName),
+            write('-   '),write(Qty),write(' '),write(RealName),write(' seed'),nl
+        )),
+        write('What do you want to plant?'),nl,
+        read(X),
+        doPlant(X)
+    ),!;
+    write('You don\'t have any seeds').
+
+updateHarvestTime :-
+    % Meng-update semua harvest time dari semua tanaman
+    forall((map_harvest(Symbol,X,Y,HarvestTime)),(
+        retract(map_harvest(Symbol,X,Y,HarvestTime)),
+        HarvestTime = 0, 
+        assertz(map_harvest(Symbol,X,Y,0))
+        ,!;
+        NewHarvestTime is HarvestTime-1,
+        assertz(map_harvest(Symbol,X,Y,NewHarvestTime))
+    )).
+
+addHarvestItem(Symbol) :-
+    % Menambahkan harvest item ke inventory
+    harvest(Item,Symbol),
+    harvestItem(Name,Item),
+    player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    Max is Lfarm * 3,
+    random(1,Max,Random),
+    addItemNtimes(Name,Random),
+    (
+        progressQuest(Random,0,0)
+        ,!;!
+    ).
+
+isPlayerFarmer :-
+    % Mengembalikan true jika player adalah farmer
+    player_job('Farmer').
+
+addFarmXP :-
+    % Menambahkan XP pada player sesuai job
+    (
+        isPlayerFarmer, 
+        upperLimitFarmerXPFarm(Limit), 
+        random(1,Limit,X)
+        ,!;
+        upperLimitNormalXPFarm(Limit1), 
+        random(1,Limit1,X)
+    ),
+    add_xp(0,X,0),
+    write('You gained '),
+    write(X),
+    write(' farming exp!'),nl.

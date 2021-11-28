@@ -12,6 +12,8 @@
 :- include('exploration.pl').
 :- include('quest.pl').
 :- include('fishing.pl').
+:- include('farming.pl').
+:- include('ranching.pl').
 :- include('marketplace.pl').
 :- include('house.pl').
 
