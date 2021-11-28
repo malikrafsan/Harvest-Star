@@ -114,10 +114,6 @@ sleep :-
   write('You went to sleep.\n\n'),
   (addTime(240),
   world(_date, _season, _weather),
-  nl,
-  write('Day '), write(_date), write('\n'),
-  write('Season : '), write(_season), write('\n'),
-  write('Weather : '), write(_weather), write('\n'),
   retract(state(inHouse)),
   asserta(state(outside)),!;
   fail_state,!).

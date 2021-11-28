@@ -87,9 +87,9 @@ buy :-
 listingInventory(Cond) :-
   (
     forall(
-      player_inv(Name, Qty),
+      (player_inv(Name, Qty),item(Name, _, Price)),
       (
-        item(Name, _, Price) -> write(Qty), write(' '), write(Name), write(' ['), write(Price), write(']'), nl
+        write(Qty), write(' '), write(Name), write(' ['), write(Price), write(']'), nl
       )
     ), Cond = true,!;
     Cond = false
