@@ -58,7 +58,7 @@ resetPlayer :-
 
 /* List of commands */
 status:-
-    \+player_job(_), write('Player has not been created!'),nl,!;
+    isGameStarted,
     player(Job, Leveltotal, Level1, Level2, Level3, Xptotal, Xp1, Xp2, Xp3, Gold),
     Xptotalcap is (300 + 30*(Leveltotal-1)),
     Xpfishcap is (100 + 10*(Level1-1)),

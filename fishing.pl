@@ -1,7 +1,9 @@
 % COMMANDS
 fish:-
-    canFish -> (takeFish,addTime(10))
-    ;write('You can\'t fish here').
+    isGameStarted, (
+        canFish -> (takeFish,addTime(10))
+        ;write('You can\'t fish here')
+    ).
 
 % FACTS AND RULES
 fish_list(['Tuna', 'Salmon', 'Catfist', 'Eel', 'Crab', 'Snapper']).

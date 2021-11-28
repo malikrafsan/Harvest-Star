@@ -77,6 +77,6 @@ displayMap(XMax, YMax, X, Y) :-
     ) ; true.
 
 map :-
-    player_job(_),
+    isGameStarted,
     map_size(XMax, YMax),
     displayMap(XMax, YMax, -1, -1).

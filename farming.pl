@@ -1,5 +1,6 @@
 % COMMANDS
 dig :-
+    isGameStarted,
     % Melakukan command dig sesuai validasi
     isNotEmptyTile, 
     write('you can\'t dig here\n'),!
@@ -8,6 +9,7 @@ dig :-
     addTime(5).
 
 plant :-
+    isGameStarted,
     % Melakukan command plant sesuai validasi
     player_position(X,Y),
     (
@@ -17,22 +19,24 @@ plant :-
     ).
 
 harvest :-
-    % Melakukan command harvest sesuai validasi
-    player_position(X,Y),
-    map_harvest(Symbol,X,Y,HarvestTime),
-    (
-        HarvestTime = 0,
-        addHarvestItem(Symbol),
-        retract(map_harvest(Symbol,X,Y,HarvestTime)),
-        addFarmXP,
-        addTime(5)
-        ,!;
-        HarvestTime < 0,
-        write('You haven\'t plant here\n')
-        ,!;
-        write('Your plant is not ready to be harvested')   
-    ),!;
-    write('You are not in harvest place').
+    isGameStarted, (
+        % Melakukan command harvest sesuai validasi
+        player_position(X,Y),
+        map_harvest(Symbol,X,Y,HarvestTime),
+        (
+            HarvestTime = 0,
+            addHarvestItem(Symbol),
+            retract(map_harvest(Symbol,X,Y,HarvestTime)),
+            addFarmXP,
+            addTime(5)
+            ,!;
+            HarvestTime < 0,
+            write('You haven\'t plant here\n')
+            ,!;
+            write('Your plant is not ready to be harvested')   
+        ),!;
+        write('You are not in harvest place')
+    ).
 
 
 % FACTS AND RULES

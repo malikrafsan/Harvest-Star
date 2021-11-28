@@ -7,18 +7,23 @@ potions(3, 'Blue Potion', 300, 'Add 120 XP Ranching').
 potions_exp_add(1, 100, 0, 0).
 potions_exp_add(2, 0, 50, 0).
 potions_exp_add(3, 0, 0, 120).
-potions_qty(1, 5).
-potions_qty(2, 5).
-potions_qty(3, 5).
 
 initAlchemist :-
     random(6, 12, AcRand),
     NAcRand is mod(AcRand, 30) + 1,
-    retractall(alchemist_date(_)),
+    resetAlchemist,
+    restockAlchemist,
     asserta(alchemist_date(NAcRand)).
 
+restockAlchemist :-
+    retractall(potions_qty(_, _)),
+    asserta(potions_qty(1, 5)),
+    asserta(potions_qty(2, 5)),
+    asserta(potions_qty(3, 5)).
+
 resetAlchemist :-
-    retractall(alchemist_date(_)).
+    retractall(alchemist_date(_)),
+    retractall(potions_qty(_, _)).
 
 printPotions :-
     forall(
@@ -40,11 +45,7 @@ advAlchemistDate :-
     % Set alchemist date
     isAlchemistDate,
     alchemist_date(AcDate),
-    retractall(potions_qty(_, _)),
-    asserta(potions_qty(1, 5)),
-    asserta(potions_qty(2, 5)),
-    asserta(potions_qty(3, 5)),
-    retractall(alchemist_date(_)),
+    restockAlchemist,
     random(6, 12, AcRand),
     AcDateNew is AcDate + AcRand,
     asserta(alchemist_date(AcDateNew)).

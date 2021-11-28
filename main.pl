@@ -18,6 +18,7 @@
 :- include('marketplace.pl').
 :- include('house.pl').
 :- include('alchemist.pl').
+:- include('fairy.pl').
 
 writeOpening :-
     write('  _   _                           _   '), nl,
@@ -52,6 +53,12 @@ start :-
     resetAll,
     initAll.
 
+isGameStarted :-
+    \+ player_job(_), !,
+    write('Harvest Star is not started yet.'), nl,
+    write('Please start the game first.'), nl, fail
+    ; true.
+
 initAll :-
     initPlayer,
     initMap,
@@ -68,6 +75,7 @@ resetAll :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
 
 
 exit :-
+  isGameStarted,
   \+ state(outside),
   retract(state(_)),
   asserta(state(outside)),

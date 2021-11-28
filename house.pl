@@ -1,6 +1,7 @@
 :- dynamic(diary/2).
 
 house :-
+  isGameStarted,
   (isInObject('H'),
   retract(state(outside)),
   asserta(state(inHouse)),
@@ -45,6 +46,7 @@ add_diary(Date) :-
 
 
 writeDiary :-
+  isGameStarted,
   state(inHouse),!,
   world(Date, Season, _), season(NS, Season), TotalDate is (NS-1) * 30 + Date, 
   (
@@ -75,6 +77,7 @@ write_list_diary([Head|Tail]) :-
   write_list_diary(Tail). 
 
 readDiary :-
+  isGameStarted,
   state(inHouse),!,
   write('You found some entries on diary.'), nl,
   findall(
@@ -110,17 +113,19 @@ load_file(Date) :-
   close(Savefile).
 
 sleep :-
-  state(inHouse),!,
-  write('You went to sleep.\n\n'),
-  (addTime(240),
-  world(_date, _season, _weather),
-  retract(state(inHouse)),
-  asserta(state(outside)),!;
-  fail_state,!).
-
-sleep :-
-  write('You can\'t sleep outside your house.\n').
-
+  isGameStarted, (
+    state(inHouse), !, (
+      write('You went to sleep.'), nl, nl,
+      getFairy,
+      (addTime(240),
+      world(_date, _season, _weather),
+      retract(state(inHouse)),
+      asserta(state(outside)),!;
+      fail_state,!)
+    ) ; (
+      write('You can\'t sleep outside your house.\n')
+    )
+  ).
 
 resetDiary :-
   retractall(diary(_,_)).

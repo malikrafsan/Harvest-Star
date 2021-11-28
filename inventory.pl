@@ -17,6 +17,7 @@ inventoryCap(Cap) :-
 
 /* To print all the items in inventory */
 inventory :-
+    isGameStarted,
     \+player_inv(_,_), write('Your inventory is empty!'), nl,!;
     inventoryNeff(Neff),
     inventoryCap(Cap),
@@ -83,13 +84,20 @@ itemdibuang(Name) :-
     delItemNtimes(Name,X)).
 
 throwItem :- 
-    inventoryNeff(Neff), Neff =:= 0, write('No item in inventory, can\'t throw item'),!;
-    (inventory, nl,
-    write('What do you want to throw?'), nl,
-    read_string(Name), nl,
-    (\+player_inv(Name,_), write('Item not in inventory, cancelling.....'), !;
-    equipment(Name,_,_,_), write('You can only throw Items, not equipments.'), !;
-    itemdibuang(Name))).
+    isGameStarted, (
+        (inventoryNeff(Neff), Neff =:= 0), !, (
+            write('No item in inventory, can\'t throw item')
+        ) ; (
+            inventory, nl,
+            write('What do you want to throw?'), nl,
+            read_string(Name), nl,
+            (
+                \+player_inv(Name,_), write('Item not in inventory, cancelling.....'), !;
+                equipment(Name,_,_,_), write('You can only throw Items, not equipments.'), !;
+                itemdibuang(Name)
+            )
+        )
+    ).
 
 giveDefaultItems :- 
     addItemNtimes('Training Fishing Rod',1),

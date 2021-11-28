@@ -3,24 +3,26 @@
 
 % COMMANDS
 ranch :-
-  % Melakukan command ranch dan sebagai fungsi utama
-  isOnRanchBuilding,
-  (
+  isGameStarted, (
+    % Melakukan command ranch dan sebagai fungsi utama
+    isOnRanchBuilding,
     (
-      retract(state(_))
-      ;write('You don\'t have state, asserting state ranch'),nl
-    ),
-    assertz(state(ranch)),
-    (
-      hasAnimal,
-      write('Welcome to the ranch! You have:'),nl,nl,
-      displayAnimal,nl,
-      write('What do you want to do?'),nl
-      ;
-      nl,write('You have no animals, you need to buy animal first'),nl
-    )
-  ),!;
-  write('You are not in ranch building').
+      (
+        retract(state(_))
+        ;write('You don\'t have state, asserting state ranch'),nl
+      ),
+      assertz(state(ranch)),
+      (
+        hasAnimal,
+        write('Welcome to the ranch! You have:'),nl,nl,
+        displayAnimal,nl,
+        write('What do you want to do?'),nl
+        ;
+        nl,write('You have no animals, you need to buy animal first'),nl
+      )
+    ),!;
+    write('You are not in ranch building')
+  ).
 
 chicken :-
   exploit_animal(chicken). 

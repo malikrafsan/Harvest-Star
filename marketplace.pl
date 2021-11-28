@@ -10,6 +10,7 @@ marketListing('Fall', 'Carrot Seeds').
 marketListing('Winter', 'Potato Seeds').
 
 market :-
+  isGameStarted,
   (isInObject('M'),(retract(state(outside)),
   asserta(state(inMarket)); 
   state(inMarket)),
@@ -43,6 +44,7 @@ listingAnimal :-
   ).
 
 buy :-
+  isGameStarted,
   (
     (
       retract(state(inMarket)), asserta(state(isBuying)),!;
@@ -96,6 +98,7 @@ listingInventory(Cond) :-
   ).
 
 sell :-
+  isGameStarted,
   (
     (
       retract(state(inMarket)),asserta(state(isSelling)),!;
