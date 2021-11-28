@@ -11,14 +11,14 @@ ranch :-
       ;write('You don\'t have state, asserting state ranch'),nl
     ),
     assertz(state(ranch)),
-    write('Welcome to the ranch! You have:'),nl,nl,
     (
       hasAnimal,
-      displayAnimal,nl
+      write('Welcome to the ranch! You have:'),nl,nl,
+      displayAnimal,nl,
+      write('What do you want to do?'),nl
       ;
-      write('You have no animals, you need to buy animal first'),nl,nl
-    ),
-    write('What do you want to do?'),nl
+      nl,write('You have no animals, you need to buy animal first'),nl
+    )
   ),!;
   write('You are not in ranch building').
 
