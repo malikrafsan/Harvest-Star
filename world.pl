@@ -16,6 +16,7 @@ initWorld :-
 
 addDay :-
   world(_date, _season, _weather),
+  advAlchemistDate,
   % Menambahkan hari
   (_date < 30, _date1 is _date + 1, _season1 = _season, !;
    _date == 30, _date1 is 1, season(X, _season), X1 is X + 1, season(X1, _season1), !),

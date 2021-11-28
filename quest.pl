@@ -45,7 +45,7 @@ quest :-
     write('You have a new quest!'), nl,
     writeQuest, !.
 quest :-
-    write('You are not in building Q.'), nl.
+    write('You are not in Quest \'Q\'.'), nl.
 
 writeQuest :-
     quest_ongoing(Harvest, Fish, Ranch),

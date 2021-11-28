@@ -1,5 +1,4 @@
-:- dynamic(map_object/3).
-:- dynamic(map_harvest/4).
+:- dynamic(map_harvest/4). /* harvest, x, y, waktu */
 :- dynamic(player_position/2). /* posisinya dalam x,y kali ya */
 
 /*  Building/map object can be
@@ -16,6 +15,7 @@ map_object('M', 9, 11).
 map_object('R', 9, 4).
 map_object('H', 6, 5).
 map_object('Q', 6, 2).
+map_object('A', 6, 4).
 /* Water Tile */
 map_object('o', 4, 7).
 map_object('o', 5, 7).
@@ -36,7 +36,6 @@ initMap :-
     asserta(player_position(X,Y)).
 
 resetMap :-
-    retractall(map_object(_,_,_)),
     retractall(map_harvest(_,_,_,_)),
     retractall(player_position(_,_)).
 
@@ -63,25 +62,29 @@ isInMap(X,Y) :-
     Y < YMax.
 
 displayMap(XMax, YMax, X, Y) :-
-    Y =< YMax, X =< XMax,
-    ((Y == -1, !; Y == YMax), !, (
-        write('#')
-    ) ; (
-        (X == -1, !; X == XMax), !, write('#');
-        player_position(X, Y), !, write('P');
-        map_object(Obj, X, Y), !, write(Obj);
-        map_harvest(Hrv, X, Y, _), !, write(Hrv);
-        write('-')
-    )),
-    (X == XMax, !, (
-        YN is Y + 1,
-        XN = -1, nl
-    ) ; (
-        YN = Y,
-        XN is X + 1
-    )),
-    displayMap(XMax, YMax, XN, YN).
+    (Y =< YMax, X =< XMax), !, (
+        ((Y == -1, !; Y == YMax), !, (
+            write('#')
+        ) ; (
+            (X == -1, !; X == XMax), !, write('#');
+            player_position(X, Y), !, write('P');
+            map_harvest(Hrv, X, Y, _), !, write(Hrv);
+            map_object(Obj, X, Y),
+                \+ (Obj == 'A', \+ isAlchemistDate),
+                write(Obj), !;
+            write('-')
+        )),
+        (X == XMax, !, (
+            YN is Y + 1,
+            XN = -1, nl
+        ) ; (
+            YN = Y,
+            XN is X + 1
+        )),
+        displayMap(XMax, YMax, XN, YN)
+    ) ; true.
 
 map :-
+    player_job(_),
     map_size(XMax, YMax),
     displayMap(XMax, YMax, -1, -1).

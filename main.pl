@@ -16,6 +16,7 @@
 :- include('ranching.pl').
 :- include('marketplace.pl').
 :- include('house.pl').
+:- include('alchemist.pl').
 
 writeOpening :-
     write('  _   _                           _   '), nl,
@@ -53,12 +54,15 @@ start :-
 initAll :-
     initPlayer,
     initMap,
+    initAlchemist,
     initWorld. 
 
 resetAll :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
     resetPlayer,
+    resetMap,
     resetQuest,
-    resetWorld. 
+    resetAlchemist,
+    resetWorld.
 
 
 exit :-
