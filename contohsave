@@ -1,9 +1,0 @@
-player_job('Fisherman').
-player_lvl(1,1,2,2).
-player_xp(275,52,5,35).
-money(4500).
-player_inv('Rusty Shovel',1).
-player_inv('Training Fishing Rod',1).
-player_inv('Egg',5).
-player_inv('Carrot',5).
-player_inv('Snapper',3).

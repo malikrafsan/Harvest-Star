@@ -1,6 +1,6 @@
 % COMMANDS
 fish:-
-    canFish -> takeFish
+    canFish -> (takeFish,addTime(10))
     ;write('You can\'t fish here').
 
 % FACTS AND RULES

@@ -44,14 +44,6 @@ isInObject(Object) :-
     player_position(X,Y),
     map_object(Object, X, Y).
 
-/* Check if player in a harvest tile */
-isInHarvest(Harvest) :-
-    player_position(X,Y),
-    map_harvest(Harvest, _, X, Y).
-
-/* Check if player in an empty tile */
-isEmptyTile :-
-    \+ (isInObject(_); isInHarvest(_)).
 
 /* Check if a position is in map range */
 isInMap(X,Y) :-

@@ -8,6 +8,7 @@
 :- include('inventory.pl').
 :- include('world.pl').
 :- include('list_diary.pl').
+:- include('saves.pl').
 /* Gameplay */
 :- include('exploration.pl').
 :- include('quest.pl').
@@ -62,7 +63,8 @@ resetAll :- /* ini tolong rectract in semua wkwkkw takut ada yang kelewatan */
     resetMap,
     resetQuest,
     resetAlchemist,
-    resetWorld.
+    resetWorld,
+    resetRanch.
 
 
 exit :-
@@ -72,3 +74,6 @@ exit :-
   write('You go outside.'),nl.
 
 
+clean_save :-
+  open('list_diary.pl', write,X),
+  close(X).

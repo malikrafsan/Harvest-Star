@@ -1,18 +1,18 @@
 move(X,Y) :-
-    state(outside), !, (
-        isInMap(X,Y), !, (
-            map_object('o', X, Y), !, ( 
-                write('You can\'t move into water!'), nl, fail
-            ) ; (
-                retractall(player_position(_, _)),
-                asserta(player_position(X, Y))
-            )
+    isInMap(X,Y), !, (
+        map_object('o', X, Y), !, ( 
+            write('You can\'t move into water!'), nl, fail
         ) ; (
-            write('You can\'t move outside the map!'), nl, fail
+            player_position(OX, OY),
+            AX is abs(X - OX),
+            AY is abs(Y - OY),
+            MDist is AX + AY,
+            retractall(player_position(_, _)),
+            asserta(player_position(X, Y)),
+            addTime(MDist)
         )
     ) ; (
-        player_position(_, _),
-        write('You\'re not outside. Type \'exit\' to go outside.'), nl, fail
+        write('You can\'t move outside the map!'), nl, fail
     ).
 
 w :-

@@ -4,13 +4,14 @@ dig :-
     isNotEmptyTile, 
     write('you can\'t dig here\n'),!
     ;
-    doDig.
+    doDig,
+    addTime(5).
 
 plant :-
     % Melakukan command plant sesuai validasi
     player_position(X,Y),
     (
-        map_harvest('=',X,Y,_), planting
+        map_harvest('=',X,Y,_), planting, addTime(5)
         ,!;
         write('you can\'t plant here\n')        
     ).
@@ -23,7 +24,8 @@ harvest :-
         HarvestTime = 0,
         addHarvestItem(Symbol),
         retract(map_harvest(Symbol,X,Y,HarvestTime)),
-        addFarmXP
+        addFarmXP,
+        addTime(5)
         ,!;
         HarvestTime < 0,
         write('You haven\'t plant here\n')

@@ -46,7 +46,7 @@ add_diary(Date) :-
 
 writeDiary :-
   state(inHouse),!,
-  world(Date, Season, Weather), season(NS, Season), TotalDate is NS * 30 + Date, 
+  world(Date, Season, _), season(NS, Season), TotalDate is (NS-1) * 30 + Date, 
   (
     write('Write your diary for '), write(Season), write(' Day '), write(Date), write(': '),nl,
     read_string(Sentences),
@@ -63,8 +63,7 @@ save(Date):-
     atom_concat('saves/', Filename, Dir),   
     open(Dir,write,Savefile),
     set_output(Savefile),
-    saveplayer, 
-    saveinventory,/*TODO: setelah ini kasih save semua dynamics*/
+    saveall,
     close(Savefile), !.
 
 write_list_diary([]) :- !.
@@ -87,8 +86,8 @@ readDiary :-
     write('Choose which entries that you want to read. (1 is the most top entry)'),nl,
     read(X), X1 is X - 1, X1 >= 0,
     (
-      get_idx(List, X1, TotD), load_file(TotD) % diary(TotD, Sentences),
-      %write(Sentences),nl % TODO: uncomment kalo udah ngesave diary juga
+      get_idx(List, X1, TotD), load_file(TotD), diary(TotD, Sentences),
+      write(Sentences),nl 
     ),!;
     write('There are no entries.'),nl
   ).
@@ -104,7 +103,8 @@ load_all(Stream, [H|T]):-
 
 load_file(Date) :-
   number_atom(Date, Filename),
-  atom_concat('saves/', Filename, Dir),   
+  atom_concat('saves/', Filename, Dir),
+  resetAll,   
   open(Dir,read,Savefile),
   load_all(Savefile, _),
   close(Savefile).
@@ -114,6 +114,7 @@ sleep :-
   write('You went to sleep.\n\n'),
   (addTime(240),
   world(_date, _season, _weather),
+  nl,
   write('Day '), write(_date), write('\n'),
   write('Season : '), write(_season), write('\n'),
   write('Weather : '), write(_weather), write('\n'),
@@ -124,4 +125,7 @@ sleep :-
 sleep :-
   write('You can\'t sleep outside your house.\n').
 
+
+resetDiary :-
+  retractall(diary(_,_)).
 

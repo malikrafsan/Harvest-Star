@@ -16,7 +16,6 @@ initWorld :-
 
 addDay :-
   world(_date, _season, _weather),
-  advAlchemistDate,
   % Menambahkan hari
   (_date < 30, _date1 is _date + 1, _season1 = _season, !;
    _date == 30, _date1 is 1, season(X, _season), X1 is X + 1, season(X1, _season1), !),
@@ -31,12 +30,20 @@ addDay :-
    Y =< SRW, _weather1 = 'Snowy'),
   updateHarvestTime,
   updateDayLeft,
+  (
+    advAlchemistDate,!;
+    true
+  ),
   retractall(player_position(_,_)),
   map_object('H', X1,Y1),
   asserta(player_position(X1,Y1)),
   % Assign world 
   retract(world(_,_,_)),
-  asserta(world(_date1,_season1,_weather1)).
+  asserta(world(_date1,_season1,_weather1)),  
+  write('Day '), write(_date1), write('\n'),
+  write('Season : '), write(_season1), write('\n'),
+  write('Weather : '), write(_weather1), write('\n').
+
   
 
 fail_state :-
@@ -57,6 +64,8 @@ addTime(Time) :-
   X1 is Time + X,
   (
     X1 < 240, asserta(time(X1)),!;
+    nl,
+    write('You fell asleep'),nl,nl,
     addDay,
     asserta(time(0))
   ).

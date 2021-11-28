@@ -119,7 +119,8 @@ exploit_animal(Animal) :-
     (
       Dayleft = 0,
       addToRanchItem(Animal,Qty),
-      addRanchXP
+      addRanchXP,
+      addTime(10)
       ,!;
       animal_dont_give_output_msg(Animal)
     );
@@ -139,3 +140,6 @@ addAnimal(Animal) :-
     random(1,10,X),
     assertz(animal(Animal,1,X))
   ).
+
+resetRanch :-
+  retractall(animal(_,_,_)).

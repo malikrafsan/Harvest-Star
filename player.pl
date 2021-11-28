@@ -49,10 +49,12 @@ initPlayer :-
     write_job(Job).
 
 resetPlayer :-
+    retractall(player_inv(_,_)),
     retractall(player_lvl(_,_,_,_)),
     retractall(player_xp(_,_,_,_)),
     retractall(player_job(_)),
-    retractall(money(_)).
+    retractall(money(_)),
+    retractall(state(_)).
 
 /* List of commands */
 status:-
