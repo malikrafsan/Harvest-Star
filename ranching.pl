@@ -6,7 +6,10 @@ ranch :-
   % Melakukan command ranch dan sebagai fungsi utama
   isOnRanchBuilding,
   (
-    retract(state(_)),
+    (
+      retract(state(_))
+      ;write('You don\'t have state, asserting state ranch'),nl
+    ),
     assertz(state(ranch)),
     write('Welcome to the ranch! You have:'),nl,nl,
     (
@@ -57,7 +60,7 @@ hasAnimal :-
 displayAnimal :-
   % Menampilkan hewan yang dimiliki player
   forall(animal(Name, Quantity, DayLeft),
-    (write(Quantity), write(' '), write(Name), nl)
+    (write(Quantity), write(' '), write(Name), write(' with '), write(DayLeft),write(' day left to exploit'),nl)
   ).
 
 init_ranch :- % TESTING PURPOSE ONLY
@@ -93,6 +96,10 @@ addToRanchItem(Animal,Qty) :-
   addItemNtimes(Output,Res),
   write('You got '), write(Res), write(' '),
   write(LowerCaseOutput), write('!'),nl,
+  (
+    progressQuest(0,0,Res)
+    ,!;!
+  ),
   resetDayLeft(Animal).
 
 isPlayerRancher :-

@@ -1,13 +1,13 @@
 % COMMANDS
 fish:-
     canFish -> takeFish
-    ;write('You can\'t fishing here').
+    ;write('You can\'t fish here').
 
 % FACTS AND RULES
 fish_list(['Tuna', 'Salmon', 'Catfist', 'Eel', 'Crab', 'Snapper']).
 fish_list_length(6).
-upperLimitXP(11).
-upperLimitFishermanXP(21).
+upperLimitNormalXPFish(11).
+upperLimitFishermanXPFish(21).
 defaultChance(1000).
 thresholdChance(500).
 
@@ -46,10 +46,10 @@ addFishXP :-
     % Menambahkan XP pada player sesuai job
     (
         isPlayerFisher, 
-        upperLimitFishermanXP(Limit), 
+        upperLimitFishermanXPFish(Limit), 
         random(1,Limit,X)
         ,!;
-        upperLimitXP(Limit1), 
+        upperLimitNormalXPFish(Limit1), 
         random(1,Limit1,X)
     ),
     add_xp(X,0,0),
@@ -80,14 +80,21 @@ takeFish :-
     fish_list_length(Length),
     (
         isGotFish,
-        random(0,Length,Idx),
-        indexOf(X,Idx,Elmt),
-        random(1,10,Qty),
-        addItemNtimes(Elmt,Qty),
-        write('You got a '),
-        write(Elmt),
-        write(' with quantity: '), write(Qty), nl
-        ,!;
+        (
+            random(0,Length,Idx),
+            indexOf(X,Idx,Elmt),
+            player_lvl(Ltot,Lfish,Lfarm,Lranch),
+            Limit is Lfish * 2,
+            random(1,Limit,Qty),
+            addItemNtimes(Elmt,Qty),
+            (
+                progressQuest(0,Qty,0)
+                ,!;!
+            ),
+            write('You got a '),
+            write(Elmt),
+            write(' with quantity: '), write(Qty), nl
+        ),!;
         write('You didn\'t get anything!'),nl
     ),
     addFishXP.
