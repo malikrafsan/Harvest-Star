@@ -120,6 +120,26 @@ planting :-
     ),!;
     write('You don\'t have any seeds').
 
+newHarvestTime(Old,New) :-
+    % Mengembalikan harvest time baru berdasarkan cuaca hari tersebut
+    (
+        world(_date, _season, _weather),
+        _weather = 'Rainy',
+        TempNew is Old - 2
+        ,!;
+        _weather = 'Sunny',
+        TempNew is Old - 1
+        ,!;
+        _weather = 'Snowy',
+        TempNew is Old
+    ),
+    (
+        TempNew > 0, 
+        New is TempNew
+        ,!;
+        New is 0
+    ).
+
 updateHarvestTime :-
     % Meng-update semua harvest time dari semua tanaman
     forall((map_harvest(Symbol,X,Y,HarvestTime)),(
@@ -127,7 +147,10 @@ updateHarvestTime :-
         HarvestTime = 0, 
         assertz(map_harvest(Symbol,X,Y,0))
         ,!;
-        NewHarvestTime is HarvestTime-1,
+        HarvestTime < 0,
+        assertz(map_harvest(Symbol,X,Y,HarvestTime))
+        ,!;
+        newHarvestTime(HarvestTime,NewHarvestTime),
         assertz(map_harvest(Symbol,X,Y,NewHarvestTime))
     )).
 
