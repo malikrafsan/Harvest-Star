@@ -10,8 +10,7 @@ marketListing('Fall', 'Carrot Seeds').
 marketListing('Winter', 'Potato Seeds').
 
 market :-
-  % TODO: Cek posisi di market
-  ((retract(state(outside)),
+  (isInObject('H'),(retract(state(outside)),
   asserta(state(inMarket)); 
   state(inMarket)),
   write('You entered the market.\n'),
@@ -46,7 +45,7 @@ buy :-
     % listingAnimal,
     listingEquipment,
     write('Type item or \'cancel\' to cancel: '), nl,
-    read(Inp), money(NowMoney),
+    read_string(Inp), money(NowMoney),
     (
       (
         ( %Check Animal, !;
@@ -65,7 +64,7 @@ buy :-
         sub_money(TotPrice), addItemNtimes(Inp, Qty),!;
         write('You don\'t have enough money.'), nl
       ),!;
-      Inp == cancel, write('Canceled'),nl,!;  %FIXME: Ganti cancel jadi string
+      Inp == 'cancel', write('Canceled'),nl,!;
       write('Invalid input.'),nl
     ),
     retract(state(isBuying)), asserta(state(inMarket)),!;
@@ -89,7 +88,7 @@ sell :-
     write('What do you want to sell?'), nl,
     listingInventory,
     write('Type item name or \'cancel\' to cancel: '), nl,
-    read(Name),
+    read_string(Name),
     (
       (
         player_inv(Name, Qty), item(Name, _, Price),
@@ -99,7 +98,7 @@ sell :-
           write('You don\'t have that many.'),nl
         )
       ),!;
-      Name == cancel, write('Canceled'),nl,!; %FIXME : Ganti cancel jadi string
+      Name == 'cancel', write('Canceled'),nl,!;
       write('Invalid input.')
     ),
     retract(state(isBuying)), asserta(state(inMarket)),!;

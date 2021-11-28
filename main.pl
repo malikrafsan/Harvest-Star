@@ -1,5 +1,5 @@
-:- dynamic(state/1).  /* State Machine */
-
+/* Helper Function */
+:- include('helper.pl').
 /* Facts */
 :- include('items.pl').
 /* Systems and Dynamics */
@@ -65,18 +65,3 @@ exit :-
   write('You go outside.'),nl.
 
 
-/* Helper Input */
-read_until_end(Output) :-
-    get_char(Char),
-    (
-     Char = '.' -> Output=''
-    ;
-     (
-       read_until_end(NOutput),
-       atom_concat(Char, NOutput, Output)
-     )
-    ).
-
-read_string(Line) :-
-    write('| ?- '),
-    read_until_end(Line).

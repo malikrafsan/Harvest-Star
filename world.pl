@@ -37,13 +37,15 @@ addDay :-
 
 fail_state :-
   write('Setelah 1 tahun berlalu, kamu tidak bisa mendapatkan kemakmuran yang kau incar\n'),
-  write('Kamu tetap hidup dalam kesengsaraan.\n').
-  % TODO: reset game
+  write('Kamu tetap hidup dalam kesengsaraan.\n'),
+  resetAll,
+  startGame.
 
 goal_state :-
   write('Selamat! kamu berhasil mendapatkan uang yang cukup untuk melunasi hutang.'), nl,
-  write('Dengan ini, kamu dapat beristirahat kembali dengan tenang :D'), nl.
-  % TODO: reset game
+  write('Dengan ini, kamu dapat beristirahat kembali dengan tenang :D'), nl,
+  resetAll,
+  startGame.
 
 
 addTime(Time) :-

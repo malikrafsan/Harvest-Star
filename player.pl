@@ -2,6 +2,7 @@
 :- dynamic(player_xp/4).   /* player_xp(XP total, fishing, farming, ranching). asumsi naik level kalo xp total 300, trus xp job 100 */ 
 :- dynamic(player_job/1).   /* ini ngeset dia jobnya apa */
 :- dynamic(money/1).      /* money(Gold) */
+:- dynamic(state/1).     /* State Player */
 
 /* Facts */
 job(1, 'Fisherman').
