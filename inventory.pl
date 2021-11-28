@@ -79,15 +79,16 @@ itemdibuang(Name) :-
     player_inv(Name,Qty),
     write('How many '), write(Name), write(' do you want to throw?'), nl,
     read(X), nl,
-    (X > Qty , write('You don`t have enough '), write(Name), write(', cancelling...'), nl ;
+    (X > Qty , write('You don`t have enough '), write(Name), write(', cancelling...'), nl , !;
     delItemNtimes(Name,X)).
 
 throwItem :- 
-    inventory, nl,
+    inventoryNeff(Neff), Neff =:= 0, write('No item in inventory, can\'t throw item'),!;
+    (inventory, nl,
     write('What do you want to throw?'), nl,
     read_string(Name), nl,
     (\+player_inv(Name,_), write('Item not in inventory, cancelling.....'), !;
-    itemdibuang(Name)).
+    itemdibuang(Name))).
 
 giveDefaultItems :- 
     addItemNtimes('Training Fishing Rod',1),

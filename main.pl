@@ -23,7 +23,9 @@ writeOpening :-
     write(' | |_| |/ _` | `__\\ \\ / / _ \\/ __| __|'), nl,
     write(' |  _  | (_| | |   \\ V /  __/\\__ \\ |_ '), nl,
     write(' |_| |_|\\__,_|_|    \\_/ \\___||___/\\__|'), nl, nl,
+    sleep(0.9),
     write('Harvest Star!!!'), nl, nl,
+    sleep(0.9),
     write('Lets play and pay our debts together!'), nl.
 
 help :- 
@@ -40,7 +42,8 @@ help :-
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'),nl.
 
 startGame :- 
-    writeOpening, nl,
+    sleep(0.5),
+    writeOpening, nl, sleep(1),
     help.
 
 start :- 
