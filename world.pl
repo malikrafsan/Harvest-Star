@@ -30,6 +30,9 @@ addDay :-
    Y =< SRW, _weather1 = 'Snowy'),
   % TODO: update harvest time
   % TODO: Update Ranch time
+  retractall(player_position(_,_)),
+  map_object('H', X,Y),
+  asserta(player_position(X,Y)),
   % Assign world 
   retract(world(_,_,_)),
   asserta(world(_date1,_season1,_weather1)).

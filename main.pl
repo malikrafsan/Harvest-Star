@@ -7,7 +7,7 @@
 :- include('map.pl').
 :- include('inventory.pl').
 :- include('world.pl').
-:- include('diary.pl').
+:- include('list_diary.pl').
 /* Gameplay */
 :- include('exploration.pl').
 :- include('quest.pl').

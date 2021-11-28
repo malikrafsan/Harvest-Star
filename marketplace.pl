@@ -10,13 +10,14 @@ marketListing('Fall', 'Carrot Seeds').
 marketListing('Winter', 'Potato Seeds').
 
 market :-
-  (isInObject('H'),(retract(state(outside)),
+  (isInObject('M'),(retract(state(outside)),
   asserta(state(inMarket)); 
   state(inMarket)),
   write('You entered the market.\n'),
   write('What do you want to do?\n'),
   write('1. Buy\n'),
-  write('2. Sell\n'),!;
+  write('2. Sell\n'),
+  write('3. Exit\n'),!;
   write('You can\'t go to market now'),!).
 
 listingEquipment :-
@@ -33,6 +34,14 @@ listingMarket(Season) :-
     (item(Item2, 'Seeds', Price2), write('- '), write(Item2), write(' ('),write(Price2), write(')'), nl)
   ).
 
+listingAnimal :-
+  forall(
+    (item(Animal,'Animal',Price)),
+    (
+      write('- '), write(Animal), write(' ('), write(Price), write(')'),nl
+    )
+  ).
+
 buy :-
   (
     (
@@ -42,14 +51,14 @@ buy :-
     write('What do you want to buy?'), nl,
     world(_,Season,_),
     listingMarket(Season),
-    % listingAnimal,
+    listingAnimal,
     listingEquipment,
     write('Type item or \'cancel\' to cancel: '), nl,
     read_string(Inp), money(NowMoney),
     (
       (
-        ( %Check Animal, !;
-        marketListing(Season, Inp), item(Inp, 'Seeds', Price)),Lvl is -1,
+        item(Inp, 'Animal', Price), Qty is 1, Lvl is -1,!;
+        marketListing(Season, Inp), item(Inp, 'Seeds', Price),Lvl is -1,
         write('How Much? (Your money: '), write(NowMoney), write(')'), nl, read(Qty), !;
         equipment(Inp, Lvl, Type, Price), OldLvl is Lvl - 1, equipment(Old, OldLvl, Type, _),
         player_inv(Old, _), Qty is 1
@@ -61,7 +70,11 @@ buy :-
           Lvl > 0, delItem(Old),!; true  
         ),
         write(Qty), write(' '), write(Inp), write(' has been bought for: '), write(TotPrice),nl,
-        sub_money(TotPrice), addItemNtimes(Inp, Qty),!;
+        sub_money(TotPrice), 
+        (
+          item(Inp, 'Animal', Price), addAnimal(Inp),!;
+          addItemNtimes(Inp, Qty)
+        ),!;
         write('You don\'t have enough money.'), nl
       ),!;
       Inp == 'cancel', write('Canceled'),nl,!;

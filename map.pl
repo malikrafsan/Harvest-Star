@@ -70,7 +70,7 @@ displayMap(XMax, YMax, X, Y) :-
         (X == -1, !; X == XMax), !, write('#');
         player_position(X, Y), !, write('P');
         map_object(Obj, X, Y), !, write(Obj);
-        map_harvest(Hrv, X, Y), !, write(Hrv);
+        map_harvest(Hrv, X, Y, _), !, write(Hrv);
         write('-')
     )),
     (X == XMax, !, (
