@@ -116,9 +116,7 @@ sleep :-
   isGameStarted, (
     state(inHouse), !, (
       write('You went to sleep.'), nl, nl,
-      getFairy,
       (addTime(240),
-      world(_date, _season, _weather),
       retract(state(inHouse)),
       asserta(state(outside)),!;
       fail_state,!)

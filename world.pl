@@ -33,10 +33,11 @@ addDay :-
   (
     advAlchemistDate,!;
     true
-  ),
+  ),      
+  getFairy,
   retractall(player_position(_,_)),
-  map_object('H', X1,Y1),
-  asserta(player_position(X1,Y1)),
+  map_object('H', X2,Y2),
+  asserta(player_position(X2,Y2)),
   % Assign world 
   retract(world(_,_,_)),
   asserta(world(_date1,_season1,_weather1)),  
