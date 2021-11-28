@@ -84,12 +84,15 @@ buy :-
     write('You can\'t buy right now'), nl
   ).
 
-listingInventory :-
-  forall(
-    player_inv(Name, Qty),
-    (
-      item(Name, _, Price) -> write(Qty), write(' '), write(Name), write(' ['), write(Price), write(']'), nl
-    )
+listingInventory(Cond) :-
+  (
+    forall(
+      player_inv(Name, Qty),
+      (
+        item(Name, _, Price) -> write(Qty), write(' '), write(Name), write(' ['), write(Price), write(']'), nl
+      )
+    ), Cond = true,!;
+    Cond = false
   ).
 
 sell :-
@@ -98,22 +101,26 @@ sell :-
       retract(state(inMarket)),asserta(state(isSelling)),!;
       state(isSelling)
     ),
-    write('What do you want to sell?'), nl,
-    listingInventory,
-    write('Type item name or \'cancel\' to cancel: '), nl,
-    read_string(Name),
+    listingInventory(Cond),
     (
+      Cond == true, 
+      write('What do you want to sell?'), nl,
+      write('Type item name or \'cancel\' to cancel: '), nl,
+      read_string(Name),
       (
-        player_inv(Name, Qty), item(Name, _, Price),
-        write('How Much?'), nl, read(X),
         (
-          X =< Qty, TotPrice is Qty * Price, delItemNtimes(Name, X), add_money(TotPrice),!;
-          write('You don\'t have that many.'),nl
-        )
+          player_inv(Name, Qty), item(Name, _, Price),
+          write('How Much?'), nl, read(X),
+          (
+            X =< Qty, TotPrice is Qty * Price, delItemNtimes(Name, X), add_money(TotPrice),!;
+            write('You don\'t have that many.'),nl
+          )
+        ),!;
+        Name == 'cancel', write('Canceled'),nl,!;
+        write('Invalid input.')
       ),!;
-      Name == 'cancel', write('Canceled'),nl,!;
-      write('Invalid input.')
+      write('You don\'t have anything to sell.'),nl
     ),
-    retract(state(isBuying)), asserta(state(inMarket)),!;
+    retract(state(isSelling)), asserta(state(inMarket)),!;
     write('You can\'t sell right now'),nl
   ).

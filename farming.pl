@@ -107,6 +107,7 @@ planting :-
             item(Name,'Seeds',_),
             seedItem(Name,RealName),
             write('-   '),write(Qty),write(' '),write(RealName),write(' seed'),nl
+            ,!;!
         )),
         write('What do you want to plant?'),nl,
         read(X),
