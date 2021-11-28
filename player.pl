@@ -139,9 +139,9 @@ check_levelupranch:-
 add_xp(X2,X3,X4):-
     player_xp(Xtot, Xfish, Xfarm, Xranch),
     player_job(Job),
-    (Job = 'Fisherman', Xfish1 is round(1.5*(Xfish + X2)), Xfarm1 is Xfarm + X3, Xranch1 is Xranch + X4;
-    Job = 'Farmer', Xfish1 is Xfish + X2, Xfarm1 is round(1.5*(Xfarm + X3)), Xranch1 is Xranch + X4;
-    Job = 'Rancher', Xfish1 is Xfish + X2, Xfarm1 is Xfarm + X3, Xranch1 is round(1.5*(Xranch + X4))),
+    (Job = 'Fisherman', Xfish1 is round(1.5*X2 + Xfish), Xfarm1 is Xfarm + X3, Xranch1 is Xranch + X4;
+    Job = 'Farmer', Xfish1 is Xfish + X2, Xfarm1 is round(1.5*X3 + Xfarm), Xranch1 is Xranch + X4;
+    Job = 'Rancher', Xfish1 is Xfish + X2, Xfarm1 is Xfarm + X3, Xranch1 is round(1.5*X4 + Xranch)),
     Xtot1 is Xtot + X2 + X3 + X4,
     retract(player_xp(_,_,_,_)),
     asserta(player_xp(Xtot1,Xfish1,Xfarm1,Xranch1)),
