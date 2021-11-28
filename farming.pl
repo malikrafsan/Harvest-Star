@@ -10,7 +10,7 @@ plant :-
     % Melakukan command plant sesuai validasi
     player_position(X,Y),
     (
-        map_harvest('=',X,Y,Z), planting
+        map_harvest('=',X,Y,_), planting
         ,!;
         write('you can\'t plant here\n')        
     ).
@@ -56,8 +56,8 @@ isNotEmptyTile :-
     % Mengembalikan true jika posisi player merupakan posisi gedung atau tanaman
     player_position(X,Y),
     (
-        map_object(O,X,Y)
-        ;map_harvest(S,X,Y,H)
+        map_object(_,X,Y)
+        ;map_harvest(_,X,Y,_)
     ).
 
 doDig :-
@@ -73,7 +73,7 @@ changeTilesHarvest(Harvest) :-
     limitDayHarvest(Limit),
     (
         player_inv(Name,_),
-        equipment(Name,Lvl,'Harvest',Price)
+        equipment(Name,Lvl,'Harvest',_)
         ,!;
         Lvl is 1
     ),
@@ -95,8 +95,8 @@ doPlant(X) :-
 
 hasSeed :-
     % Mengembalikan true jika player memiliki seed
-    player_inv(Name,Qty),
-    item(Name,'Seeds',Price),!.
+    player_inv(Name,_),
+    item(Name,'Seeds',_),!.
 
 planting :-
     % Melakukan penanaman berdasarkan input user
@@ -104,7 +104,7 @@ planting :-
     (
         write('You have: '),nl,
         forall(player_inv(Name,Qty),(
-            item(Name,'Seeds',Price),
+            item(Name,'Seeds',_),
             seedItem(Name,RealName),
             write('-   '),write(Qty),write(' '),write(RealName),write(' seed'),nl
         )),
@@ -129,7 +129,7 @@ addHarvestItem(Symbol) :-
     % Menambahkan harvest item ke inventory
     harvest(Item,Symbol),
     harvestItem(Name,Item),
-    player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    player_lvl(_,_,Lfarm,_),
     Max is Lfarm * 3,
     random(1,Max,Random),
     addItemNtimes(Name,Random),

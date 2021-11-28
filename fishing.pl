@@ -30,8 +30,8 @@ canFish :-
     ).
 
 % Mencari elemen dalam list pada index tertentu
-indexOf([Head|Tail],0,Head) :- !.
-indexOf([Head|Tail],Idx,Elmt):-
+indexOf([Head|_],0,Head) :- !.
+indexOf([_|Tail],Idx,Elmt):-
     Idx > 0,
     Idx1 is Idx - 1,
     indexOf(Tail, Idx1, Res),
@@ -72,7 +72,7 @@ takeFish :-
         (
             random(0,Length,Idx),
             indexOf(X,Idx,Elmt),
-            player_lvl(Ltot,Lfish,Lfarm,Lranch),
+            player_lvl(_,Lfish,_,_),
             Limit is Lfish * 2,
             random(1,Limit,Qty),
             addItemNtimes(Elmt,Qty),

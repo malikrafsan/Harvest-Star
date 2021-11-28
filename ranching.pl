@@ -75,10 +75,10 @@ animal_dont_give_output_msg(X) :-
 
 resetDayLeft(Animal) :-
   % Mengisi kembali dayleft animal yang telah diambil output-nya
-  retract(animal(Animal,Qty,DayLeft)),
+  retract(animal(Animal,Qty,_)),
   (
     Max is Qty+1,
-    player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    player_lvl(_,_,_,Lranch),
     Limit is Max // Lranch,
     random(1,Limit,Res)
     ,!;
