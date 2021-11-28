@@ -51,6 +51,7 @@ resetPlayer :-
 
 /* List of commands */
 status:-
+    \+player_job(_), write('Player has not been created!'),nl,!;
     player(Job, Leveltotal, Level1, Level2, Level3, Xptotal, Xp1, Xp2, Xp3, Gold),
     write('Your status: '), nl,
     write('Job: '), write(Job), nl,

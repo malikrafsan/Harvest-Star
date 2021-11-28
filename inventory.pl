@@ -1,7 +1,5 @@
 :- dynamic(player_inv/2).    /* (ItemName, Qty) */
 
-/* INI NYOBA VERSI INVENTORY KALAU DIGABUNG, NANTI MINTA SARAN MAU PAKE YG MANA */
-
 /* Count the amount of a spesific item or equipment in inventory */
 itemQuantity(Name, Qtot) :-
     findall(Qty, player_inv(Name, Qty), List), /* Pake list biar kalau equipmentnya gaada, gk error, sum nya 0 */
@@ -12,19 +10,26 @@ inventoryNeff(Neff) :-
     itemQuantity(_, Qty),
     Neff is Qty.
 
+/* Count the CAP of the inventory */
+inventoryCap(Cap) :-
+    player_lvl(Lvltot,_,_,_),
+    Cap is (4*(Lvltot-1)+100).
+
 /* To print all the items in inventory */
 inventory :-
+    \+player_inv(_,_), write('Your inventory is empty!'), nl,!;
     inventoryNeff(Neff),
-    nl,write('Your inventory ('), write(Neff), write('/100)'), nl,
-    (\+player_inv(_,_), write('Your inventory is empty!'), nl,!;
+    inventoryCap(Cap),
+    nl,write('Your inventory ('), write(Neff), write('/'), write(Cap), write(')') , nl,
     forall(player_inv(Name,Qty),(equipment(Name,Level,_,_) -> write(Qty),write(' Level '), write(Level), write(' '), write(Name), nl; 
-    write(Qty), write(' '),  write(Name), nl))).
+    write(Qty), write(' '),  write(Name), nl)).
 
 /* To add item or equipment to the inventory*/
 addItem(_) :- /* Inventory is full, so fail. */
     inventoryNeff(Neff),
-    (Neff >= 100),
-    write('Inventory is full!'), nl, !, fail.
+    inventoryCap(Cap),
+    (Neff =:= Cap),
+    write('Inventory is full!'), nl, !.
 
 addItem(Name) :- /* item not in inventory, so add 1 */
     item(Name, _, _),
