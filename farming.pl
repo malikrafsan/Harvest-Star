@@ -44,8 +44,7 @@ harvestItem('Wheat', wheat).
 harvestItem('Tomato', tomato).
 harvestItem('Potato', potato).
 limitDayHarvest(10).
-upperLimitNormalXPFarm(11).
-upperLimitFarmerXPFarm(21).
+upperLimitXPFarm(11).
 
 initHarvest:- % FOR TESTING ONLY
     addItemNtimes('Carrot Seeds',4),
@@ -139,20 +138,10 @@ addHarvestItem(Symbol) :-
         ,!;!
     ).
 
-isPlayerFarmer :-
-    % Mengembalikan true jika player adalah farmer
-    player_job('Farmer').
-
 addFarmXP :-
     % Menambahkan XP pada player sesuai job
-    (
-        isPlayerFarmer, 
-        upperLimitFarmerXPFarm(Limit), 
-        random(1,Limit,X)
-        ,!;
-        upperLimitNormalXPFarm(Limit1), 
-        random(1,Limit1,X)
-    ),
+    upperLimitXPFarm(Limit), 
+    random(1,Limit,X),
     add_xp(0,X,0),
     write('You gained '),
     write(X),

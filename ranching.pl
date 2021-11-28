@@ -35,8 +35,7 @@ sheep :-
 animal_output(cow, 'Milk').
 animal_output(sheep, 'Wool').
 animal_output(chicken, 'Egg').
-upperLimitNormalXPRanch(11).
-upperLimitRancherXPRanch(21).
+upperLimitXPRanch(11).
 
 isOnRanchBuilding :-
   % Mengembalikan true jika player berada di building ranch
@@ -102,20 +101,10 @@ addToRanchItem(Animal,Qty) :-
   ),
   resetDayLeft(Animal).
 
-isPlayerRancher :-
-  % Mengembalikan true jika player adalah rancher
-  player_job('Rancher').
-
 addRanchXP :-
   % Menambahkan XP ranching pada player
-  (
-    isPlayerRancher, 
-    upperLimitRancherXPRanch(Limit), 
-    random(1,Limit,X)
-    ,!;
-    upperLimitNormalXPRanch(Limit1), 
-    random(1,Limit1,X)
-  ),
+  upperLimitXPRanch(Limit), 
+  random(1,Limit,X),
   add_xp(0,0,X),
   write('You gained '),
   write(X),

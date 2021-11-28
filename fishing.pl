@@ -6,8 +6,7 @@ fish:-
 % FACTS AND RULES
 fish_list(['Tuna', 'Salmon', 'Catfist', 'Eel', 'Crab', 'Snapper']).
 fish_list_length(6).
-upperLimitNormalXPFish(11).
-upperLimitFishermanXPFish(21).
+upperLimitXPFish(11).
 defaultChance(1000).
 thresholdChance(500).
 
@@ -38,20 +37,10 @@ indexOf([Head|Tail],Idx,Elmt):-
     indexOf(Tail, Idx1, Res),
     Elmt = Res.
 
-isPlayerFisher :-
-    % Mengembalikan true jika player adalah pemancing
-    player_job('Fisherman').
-
 addFishXP :-
     % Menambahkan XP pada player sesuai job
-    (
-        isPlayerFisher, 
-        upperLimitFishermanXPFish(Limit), 
-        random(1,Limit,X)
-        ,!;
-        upperLimitNormalXPFish(Limit1), 
-        random(1,Limit1,X)
-    ),
+    upperLimitXPFish(Limit1), 
+    random(1,Limit1,X),
     add_xp(X,0,0),
     write('You gained '),
     write(X),
