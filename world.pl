@@ -12,7 +12,7 @@ resetWorld :-
 
 initWorld :-
   asserta(world(1,'Spring', 'Sunny')),
-  asserta(time(0)).
+  asserta(time(60)).
 
 addDay :-
   world(_date, _season, _weather),
@@ -67,5 +67,16 @@ addTime(Time) :-
     nl,
     write('You fell asleep'),nl,nl,
     addDay,
-    asserta(time(0))
-  ).
+    asserta(time(60))
+  ),
+  time.
+
+time :-
+  time(Time),
+  Hr is Time // 10,
+  Mn is mod(Time, 10) * 6,
+  write('Time: '), write(Hr),write(':'),
+  (
+    Mn < 10, write(0), write(Mn),!;
+    write(Mn)
+  ),nl.
