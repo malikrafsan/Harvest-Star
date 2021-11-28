@@ -14,7 +14,6 @@ item('Carrot Seeds', 'Seeds', 20).
 item('Wheat Seeds', 'Seeds', 40).
 item('Potato Seeds', 'Seeds', 30).
 item('Tomato Seeds', 'Seeds', 50).
-
 item('Carrot', 'Harvest', 100).
 item('Wheat', 'Harvest', 100).
 item('Potato', 'Harvest', 150).
@@ -22,6 +21,12 @@ item('Tomato', 'Harvest', 200).
 item('Snapper', 'Fish', 150).
 item('Catfish', 'Fish', 200).
 item('Crab', 'Fish', 200).
+item('Tuna', 'Fish', 300).
+item('Salmon', 'Fish', 350).
+item('Eel', 'Fish', 100).
+item('Cow', 'Animal', 1500).
+item('Sheep', 'Animal', 1000).
+item('Chicken', 'Animal', 500).
 item('Egg', 'Livestock', 100).
 item('Milk', 'Livestock', 200).
 item('Wool', 'Livestock', 150).
@@ -35,11 +40,17 @@ plural('Quality Fishing Rod', 'Quality Fishing Rods').
 plural('Pro Fishing Rod', 'Pro Fishing Rods').
 plural('Carrot', 'Carrots').
 plural('Wheat', 'Wheats').
-plural('Potato', 'Potatoed').
+plural('Potato', 'Potatoes').
 plural('Tomato', 'Tomatoes').
 plural('Snapper', 'Snappers').
 plural('Catfish', 'Catfishes').
 plural('Crab', 'Crabs').
+plural('Tuna','Tunas').
+plural('Salmon','Salmons').
+plural('Eel','Eels').
+plural('Cow', 'Cows').
+plural('Sheep', 'Sheeps').
+plural('Chicken', 'Chickens').
 plural('Egg', 'Eggs').
 plural('Milk', 'Milks').
 plural('Wool', 'Wools').
@@ -58,6 +69,12 @@ sinonim('Tomato', tomato).
 sinonim('Snapper', snapper).
 sinonim('Catfish', catfish).
 sinonim('Crab', crab).
+sinonim('Tuna', tuna).
+sinonim('Salmon', salmon).
+sinonim('Eel', eel).
+sinonim('Cow', cow).
+sinonim('Sheep', sheep).
+sinonim('Chicken', chicken).
 sinonim('Egg', egg).
 sinonim('Milk', milk).
 sinonim('Wool', wool).
