@@ -88,6 +88,7 @@ throwItem :-
     write('What do you want to throw?'), nl,
     read_string(Name), nl,
     (\+player_inv(Name,_), write('Item not in inventory, cancelling.....'), !;
+    equipment(Name,_,_,_), write('You can only throw Items, not equipments.'), !;
     itemdibuang(Name))).
 
 giveDefaultItems :- 
