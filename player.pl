@@ -53,24 +53,29 @@ resetPlayer :-
 status:-
     \+player_job(_), write('Player has not been created!'),nl,!;
     player(Job, Leveltotal, Level1, Level2, Level3, Xptotal, Xp1, Xp2, Xp3, Gold),
+    Xptotalcap is (300 + 30*(Leveltotal-1)),
+    Xpfishcap is (100 + 10*(Level1-1)),
+    Xpfarmcap is (100 + 10*(Level2-1)),
+    Xpranchcap is (100 + 10*(Level3-1)),
     write('Your status: '), nl,
     write('Job: '), write(Job), nl,
     write('Level: '), write(Leveltotal), nl,
     write('Level farming: '), write(Level2), nl,
-    write('EXP farming: '), write(Xp2), nl,
+    write('EXP farming: '), write(Xp2), write('/'), write(Xpfarmcap), nl,
     write('Level fishing: '), write(Level1), nl,
-    write('EXP fishing: '), write(Xp1), nl,
+    write('EXP fishing: '), write(Xp1), write('/'), write(Xpfishcap), nl,
     write('Level ranching: '), write(Level3), nl,
-    write('EXP ranching: '), write(Xp3), nl,
-    write('EXP: '), write(Xptotal), write('/'), write('300'), nl,
+    write('EXP ranching: '), write(Xp3), write('/'), write(Xpranchcap), nl,
+    write('EXP: '), write(Xptotal), write('/'), write(Xptotalcap), nl,
     write('Gold: '), write(Gold), nl, nl, !.
 
 /* Operations regarding leveling up */
 leveluptot :-
     player_xp(Xtot,Xfish,Xfarm,Xranch),
     player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    Xcap is (300 + 30*(Ltot-1)),
     L1 is Ltot + 1,
-    X1 is Xtot - 300,
+    X1 is Xtot - Xcap,
     retractall(player_lvl(_,_,_,_)),
     retractall(player_xp(_,_,_,_)),
     asserta(player_xp(X1,Xfish,Xfarm,Xranch)),
@@ -79,8 +84,9 @@ leveluptot :-
 levelupfish :-
     player_xp(Xtot,Xfish,Xfarm,Xranch),
     player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    Xcap is (100 + 10*(Lfish-1)),
     L1 is Lfish + 1,
-    X1 is Xfish - 100,
+    X1 is Xfish - Xcap,
     retractall(player_lvl(_,_,_,_)),
     retractall(player_xp(_,_,_,_)),
     asserta(player_xp(Xtot,X1,Xfarm,Xranch)),
@@ -89,8 +95,9 @@ levelupfish :-
 levelupfarm :-
     player_xp(Xtot,Xfish,Xfarm,Xranch),
     player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    Xcap is (100 + 10*(Lfarm-1)),
     L1 is Lfarm + 1,
-    X1 is Xfarm - 100,
+    X1 is Xfarm - Xcap,
     retractall(player_lvl(_,_,_,_)),
     retractall(player_xp(_,_,_,_)),
     asserta(player_xp(Xtot,Xfish,X1,Xranch)),
@@ -99,28 +106,29 @@ levelupfarm :-
 levelupranch :-
     player_xp(Xtot,Xfish,Xfarm,Xranch),
     player_lvl(Ltot,Lfish,Lfarm,Lranch),
+    Xcap is (100 + 10*(Lranch-1)),
     L1 is Lranch + 1,
-    X1 is Xranch - 100,
+    X1 is Xranch - Xcap,
     retractall(player_lvl(_,_,_,_)),
     retractall(player_xp(_,_,_,_)),
     asserta(player_xp(Xtot,Xfish,Xfarm,X1)),
     asserta(player_lvl(Ltot,Lfish,Lfarm,L1)), !.
 
 check_leveluptot:-
-    player_xp(X,_,_,_),
-    (X >= 300 -> leveluptot, write('Congratulations, you leveled up!'), nl, check_leveluptot ; true), !.
+    player_xp(X,_,_,_), player_lvl(L,_,_,_), Xcap is (300 + 30*(L-1)),
+    (X >= Xcap -> leveluptot, write('Congratulations, you leveled up!'), nl, check_leveluptot ; true), !.
 
 check_levelupfish:-
-    player_xp(_,X,_,_),
-    (X >= 100 -> levelupfish, write('Congratulations, your fishing skills leveled up!'), nl, check_levelupfish ; true), !.
+    player_xp(_,X,_,_), player_lvl(_,L,_,_), Xcap is (100 + 10*(L-1)),
+    (X >= Xcap -> levelupfish, write('Congratulations, your fishing skills leveled up!'), nl, check_levelupfish ; true), !.
 
 check_levelupfarm:-
-    player_xp(_,_,X,_),
-    (X >= 100 -> levelupfarm, write('Congratulations, your farming skills leveled up!'), nl, check_levelupfarm ; true), !.
+    player_xp(_,_,X,_), player_lvl(_,_,L,_), Xcap is (100 + 10*(L-1)),
+    (X >= Xcap -> levelupfarm, write('Congratulations, your farming skills leveled up!'), nl, check_levelupfarm ; true), !.
 
 check_levelupranch:-
-    player_xp(_,_,_,X),
-    (X >= 100 -> levelupranch, write('Congratulations, your ranching skills leveled up!'), nl , check_levelupranch ; true), !.
+    player_xp(_,_,_,X), player_lvl(_,_,_,L), Xcap is (100 + 10*(L-1)),
+    (X >= Xcap -> levelupranch, write('Congratulations, your ranching skills leveled up!'), nl , check_levelupranch ; true), !.
 
 /* Operations regarding adding xp and money */
 add_xp(X2,X3,X4):-
