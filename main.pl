@@ -50,8 +50,27 @@ startGame :-
     help.
 
 start :- 
-    resetAll,
-    initAll.
+    \+ player_job(_), !, (
+        resetAll,
+        initAll
+    ) ; (
+        write('Game has already started!'), nl , write('Please quitGame first if you want to start the game over.')
+    ).
+
+quitGame :-
+    player_job(_), !, (
+        write('Are you sure you want to quit the game?') ,nl,
+        write('Your progress will be lost. (yes/no)'),nl,
+        read(Quitgame), Quitgame == 'yes', !, (
+                write('Succesfully exited the game.'), nl,
+                resetAll
+            ) ; (
+                true
+            )
+        ) ; (
+            write('Game has not started')
+    ).
+
 
 isGameStarted :-
     \+ player_job(_), !,
