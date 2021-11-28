@@ -25,6 +25,9 @@ harvest :-
         retract(map_harvest(Symbol,X,Y,HarvestTime)),
         addFarmXP
         ,!;
+        HarvestTime < 0,
+        write('You haven\'t plant here\n')
+        ,!;
         write('Your plant is not ready to be harvested')   
     ),!;
     write('You are not in harvest place').
