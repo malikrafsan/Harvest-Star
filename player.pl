@@ -144,6 +144,9 @@ add_xp(X2,X3,X4):-
     (Job = 'Fisherman', Xfish1 is round(1.5*X2 + Xfish), Xfarm1 is Xfarm + X3, Xranch1 is Xranch + X4;
     Job = 'Farmer', Xfish1 is Xfish + X2, Xfarm1 is round(1.5*X3 + Xfarm), Xranch1 is Xranch + X4;
     Job = 'Rancher', Xfish1 is Xfish + X2, Xfarm1 is Xfarm + X3, Xranch1 is round(1.5*X4 + Xranch)),
+    (X2 > 0 , write('You gained '), write(X2), write(' '), (Job = 'Fisherman', write('(+ '), Bonus is round(0.5*X2), write(Bonus), write(' bonus) ') ; true), write('fishing xp!'),nl;true),
+    (X3 > 0 , write('You gained '), write(X3), write(' '), (Job = 'Farmer', write('(+ '), Bonus is round(0.5*X3), write(Bonus), write(' bonus) ') ; true), write('farming xp!'),nl;true),
+    (X4 > 0 , write('You gained '), write(X4), write(' '), (Job = 'Rancher', write('(+ '), Bonus is round(0.5*X4), write(Bonus), write(' bonus) ') ; true), write('ranching xp!'),nl;true),
     Xtot1 is Xtot + X2 + X3 + X4,
     retract(player_xp(_,_,_,_)),
     asserta(player_xp(Xtot1,Xfish1,Xfarm1,Xranch1)),
