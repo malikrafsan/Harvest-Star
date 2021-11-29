@@ -60,7 +60,7 @@ start :-
 quitGame :-
     player_job(_), !, (
         write('Are you sure you want to quit the game?') ,nl,
-        write('Your progress will be lost. (yes/no)'),nl,
+        write('Your progress will be lost. (yes/[no])'),nl,
         read(Quitgame), Quitgame == 'yes', !, (
                 write('Succesfully exited the game.'), nl,
                 resetAll
