@@ -3,8 +3,9 @@
 house :-
   isGameStarted,
   (isInObject('H'),
-  retract(state(outside)),
-  asserta(state(inHouse)),
+  (retract(state(outside)),
+  asserta(state(inHouse)),!;
+  state(inHouse)),
   write('What do you want todo?\n'),
   write('- sleep\n'),
   write('- writeDiary\n'),

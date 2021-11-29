@@ -55,13 +55,15 @@ buy :-
     listingMarket(Season),
     listingAnimal,
     listingEquipment,
+    money(NowMoney),
+    write('Your money: '), write(NowMoney),nl,
     write('Type item or \'cancel\' to cancel: '), nl,
-    read_string(Inp), money(NowMoney),
+    read_string(Inp), 
     (
       (
         item(Inp, 'Animal', Price), Qty is 1, Lvl is -1,!;
         marketListing(Season, Inp), item(Inp, 'Seeds', Price),Lvl is -1,
-        write('How Much? (Your money: '), write(NowMoney), write(')'), nl, read(Qty), !;
+        write('How Much?'), nl, read(Qty), !;
         equipment(Inp, Lvl, Type, Price), OldLvl is Lvl - 1, equipment(Old, OldLvl, Type, _),
         player_inv(Old, _), Qty is 1
       ),

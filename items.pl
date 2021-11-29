@@ -14,10 +14,10 @@ item('Carrot Seeds', 'Seeds', 20).
 item('Wheat Seeds', 'Seeds', 40).
 item('Potato Seeds', 'Seeds', 30).
 item('Tomato Seeds', 'Seeds', 50).
-item('Carrot', 'Harvest', 100).
-item('Wheat', 'Harvest', 100).
-item('Potato', 'Harvest', 150).
-item('Tomato', 'Harvest', 200).
+item('Carrot', 'Harvest', 20).
+item('Wheat', 'Harvest', 40).
+item('Potato', 'Harvest', 30).
+item('Tomato', 'Harvest', 50).
 item('Snapper', 'Fish', 30).
 item('Catfish', 'Fish', 40).
 item('Crab', 'Fish', 50).
