@@ -79,13 +79,14 @@ write_list_diary([Head|Tail]) :-
 readDiary :-
   isGameStarted,
   state(inHouse),!,
-  write('You found some entries on diary.'), nl,
   (
+    consult('list_diary.pl'),
     findall(
       X, diary(X), List
     ),
-    write_list_diary(List),
     length(List, Len), Len > 0,
+    write('You found some entries on diary.'), nl,
+    write_list_diary(List),
     write('Choose which entries that you want to read. (1 is the most top entry, 0 to cancel)'),nl,
     read(X),
     (
@@ -95,7 +96,8 @@ readDiary :-
         write(Sentences),nl 
       ),!;
       write('There are no entries.'),nl
-    )
+    ),!;
+    write('There are no diary entries.')
   ).
 
 load_all(Stream, []):-
