@@ -180,6 +180,8 @@ addHarvestItem(Symbol) :-
     player_lvl(_,_,Lfarm,_),
     Max is Lfarm * 3,
     random(1,Max,Random),
+    write('You got '), write(Random), write(' '),
+    write(Name), write('!'),nl,
     addItemNtimes(Name,Random),
     (
         progressQuest(Random,0,0)
