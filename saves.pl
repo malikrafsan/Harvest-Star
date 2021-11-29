@@ -45,6 +45,14 @@ saveall :-
     ),
     (
       forall(
+        animal(Animal, ANQTY, ANState),
+        (
+          write('animal(\''), write(Animal), write('\','), write(ANQTY), write(','), write(ANState), write(').'), nl
+        )
+      )
+    ),
+    (
+      forall(
         map_harvest(Symbol, X, Y, T),
         (
           write('map_harvest(\''), write(Symbol), write('\','), write(X), write(','), write(Y), write(','), write(T), write(').'),nl

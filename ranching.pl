@@ -25,18 +25,18 @@ ranch :-
   ).
 
 chicken :-
-  exploit_animal(chicken). 
+  exploit_animal('Chicken'). 
   
 cow :-
-  exploit_animal(cow).
+  exploit_animal('Cow').
 
 sheep :-
-  exploit_animal(sheep).
+  exploit_animal('Sheep').
 
 % FACTS AND RULES
-animal_output(cow, 'Milk').
-animal_output(sheep, 'Wool').
-animal_output(chicken, 'Egg').
+animal_output('Cow', 'Milk').
+animal_output('Sheep', 'Wool').
+animal_output('Chicken', 'Egg').
 upperLimitXPRanch(11).
 
 isOnRanchBuilding :-
@@ -64,10 +64,6 @@ displayAnimal :-
     (write(Quantity), write(' '), write(Name), write(' with '), write(DayLeft),write(' day left to exploit'),nl)
   ).
 
-init_ranch :- % TESTING PURPOSE ONLY
-  assertz(animal(cow, 10, 3)),
-  assertz(animal(sheep, 4, 5)),
-  assertz(animal(chicken, 1, 6)).
 
 animal_dont_give_output_msg(X) :-
   % Menampilkan pesan dimana hewan tidak diberikan output
