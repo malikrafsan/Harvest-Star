@@ -11,16 +11,12 @@ quest :-
         CH >= Harvest, CF >= Fish, CR >= Ranch, !, (
             isInObject('Q'), !, (
                 write('Quest completed!'), nl,
-                write('You got:'), nl,
                 XPHA is Harvest * 60,
                 XPFA is Fish * 20,
                 XPRA is Ranch * 50,
-                MoneyAdd is Harvest * 80 + Fish * 50 + Ranch * 70,
-                write('XP Harvest: +'), write(XPHA), nl,
-                write('XP Fishing: +'), write(XPFA), nl,
-                write('XP Ranch: +'), write(XPRA), nl,
+                MoneyAdd is Harvest * 80 + Fish * 40 + Ranch * 70,
                 write('Money: +'), write(MoneyAdd), nl,
-                add_xp(XPHA, XPFA, XPRA),
+                add_xp(XPFA, XPHA, XPRA),
                 add_money(MoneyAdd),
                 resetQuest
             ) ; (

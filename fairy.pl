@@ -42,7 +42,7 @@ showFairy :-
 
 getFairy :-
     (
-        (random(0, 8, Rand), Rand > 7), !, (
+        (random(0, 9, Rand), Rand == 8), !, (
             sleep(1),
             showFairy,
             write('Behind your deep sleep, '),
