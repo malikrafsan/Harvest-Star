@@ -20,11 +20,11 @@ addDay :-
   (_date < 30, _date1 is _date + 1, _season1 = _season, !;
    _date == 30, _date1 is 1, season(X, _season), X1 is X + 1, season(X1, _season1), !),
   % Random weather berdasarkan season
-  (_season1 == 'Spring', S is 3, SR is 10, SRW is 10, !;
-   _season1 == 'Summer', S is 5, SR is 10, SRW is 10, !;
-   _season1 == 'Fall', S is 7, SR is 10, SRW is 10, !;
-   _season1 == 'Winter', S is 3, SR is 4, SRW is 10, !),
-  random(0, SRW, Y),
+  (_season1 == 'Fall', S is 3, SR is 10, SRW is 10, !;
+   _season1 == 'Spring', S is 5, SR is 10, SRW is 10, !;
+   _season1 == 'Summer', S is 7, SR is 10, SRW is 10, !;
+   _season1 == 'Winter', S is 4, SR is 5, SRW is 10, !),
+  random(1, SRW, Y),
   (Y =< S, _weather1 = 'Sunny', !;
    Y =< SR, _weather1 = 'Rainy', !;
    Y =< SRW, _weather1 = 'Snowy'),
@@ -48,14 +48,17 @@ addDay :-
   
 
 fail_state :-
-  write('Setelah 1 tahun berlalu, kamu tidak bisa mendapatkan kemakmuran yang kau incar\n'),
-  write('Kamu tetap hidup dalam kesengsaraan.\n'),
+  write('One year passed and yet you still can\'t pay your debt.\n'),
+  money(Gold),
+  write('You failed miserably and you only have: '), write(Gold), write(' Gold.'),nl,
   resetAll,
   startGame.
 
 goal_state :-
-  write('Selamat! kamu berhasil mendapatkan uang yang cukup untuk melunasi hutang.'), nl,
-  write('Dengan ini, kamu dapat beristirahat kembali dengan tenang :D'), nl,
+  write('Congratulations you\'ve paid your debt!'), nl,
+  write('With this, you can enjoy your remaining life in this farmland.'), nl,
+  world(Date, Season,_), season(SN, Season), TotDay is (SN -1) * 30 + Date,
+  write('You completed this game in: '), write(TotDay), write(' Days'),nl,
   resetAll,
   startGame.
 
