@@ -35,13 +35,9 @@ write_job(Job):-
     write(', let\'s start '), job(Id,Job), job_ing(Id,Jobing), write(Jobing), write('.'), nl, !.
 
 initPlayer :-
-    sleep(0.5),
     write('Welcome to Harvest Star. Choose your job '),nl,
-    sleep(0.9),
     write('1. Fisherman '),nl,
-    sleep(0.4),
     write('2. Farmer '),nl,
-    sleep(0.4),
     write('3. Rancher '),nl,
     read(X), nl,
     job(X, Job),
