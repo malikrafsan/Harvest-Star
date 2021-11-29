@@ -101,10 +101,7 @@ throwItem :-
 
 giveDefaultItems :- 
     addItemNtimes('Training Fishing Rod',1),
-    addItemNtimes('Egg',5),
-    addItemNtimes('Rusty Shovel',1),
-    addItemNtimes('Carrot',5),
-    addItemNtimes('Snapper',3).
+    addItemNtimes('Rusty Shovel',1).
 
 /* addItem('Rusty Shovel').
 addItem('Iron Shovel').
