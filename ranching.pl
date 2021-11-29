@@ -107,10 +107,7 @@ addRanchXP :-
   % Menambahkan XP ranching pada player
   upperLimitXPRanch(Limit), 
   random(1,Limit,X),
-  add_xp(0,0,X),
-  write('You gained '),
-  write(X),
-  write(' ranching exp!'),nl.
+  add_xp(0,0,X).
 
 exploit_animal(Animal) :-
   % Mengambil output hewan jika dayleft hewan 0

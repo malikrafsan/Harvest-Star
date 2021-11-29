@@ -43,10 +43,7 @@ addFishXP :-
     % Menambahkan XP pada player sesuai job
     upperLimitXPFish(Limit1), 
     random(1,Limit1,X),
-    add_xp(X,0,0),
-    write('You gained '),
-    write(X),
-    write(' fishing exp!'),nl.
+    add_xp(X,0,0).
 
 getChance(Chance) :-
     % Menentukan chance tambahan player mendapatkan ikan berdasarkan equipment 
@@ -75,8 +72,12 @@ takeFish :-
             random(0,Length,Idx),
             indexOf(X,Idx,Elmt),
             player_lvl(_,Lfish,_,_),
-            Limit is Lfish * 2,
-            random(1,Limit,Qty),
+            Limit is Lfish // 2,
+            (
+                random(1,Limit,Qty)
+                ,!;
+                Qty is 1
+            ),
             addItemNtimes(Elmt,Qty),
             (
                 progressQuest(0,Qty,0)

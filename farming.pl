@@ -33,11 +33,22 @@ harvest :-
             HarvestTime < 0,
             write('You haven\'t plant here\n')
             ,!;
-            write('Your plant is not ready to be harvested')   
+            write('Your plant is not ready to be harvested'),nl   
         ),!;
-        write('You are not in harvest place')
+        write('You are not in harvest place'),nl
     ).
 
+farm :-
+    hasPlant,
+    write('You have plants: '),nl,
+    forall((map_harvest(Symbol,X,Y,HarvestTime)),(
+        HarvestTime >= 0,
+        harvest(Name, Symbol),
+        write('- '),write(Name),write(' '),write(HarvestTime),write(' day to harvest in position: ('),write(X), write(','),write(Y),write(')'), write('\n')
+        ,!;!
+    ))
+    ,!;
+    write('You don\'t have any plant').
 
 % FACTS AND RULES
 harvest(carrot,'c').
@@ -60,6 +71,10 @@ initHarvest:- % FOR TESTING ONLY
     addItemNtimes('Wheat Seeds',1),
     addItemNtimes('Tomato Seeds',10),
     addItemNtimes('Potato Seeds',2).
+
+hasPlant :-
+    map_harvest(_,_,_,HarvestTime),
+    HarvestTime >= 0,!.
 
 isNotEmptyTile :-
     % Mengembalikan true jika posisi player merupakan posisi gedung atau tanaman
@@ -100,7 +115,7 @@ doPlant(X) :-
         nl,write('You planted a '),
         write(X), write(' seed.\n')
     ),!;
-    write('your input is invalid').
+    write('your input is invalid'),nl.
 
 hasSeed :-
     % Mengembalikan true jika player memiliki seed
@@ -122,7 +137,7 @@ planting :-
         read(X),
         doPlant(X)
     ),!;
-    write('You don\'t have any seeds').
+    write('You don\'t have any seeds'),nl.
 
 newHarvestTime(Old,New) :-
     % Mengembalikan harvest time baru berdasarkan cuaca hari tersebut
@@ -175,7 +190,4 @@ addFarmXP :-
     % Menambahkan XP pada player sesuai job
     upperLimitXPFarm(Limit), 
     random(1,Limit,X),
-    add_xp(0,X,0),
-    write('You gained '),
-    write(X),
-    write(' farming exp!'),nl.
+    add_xp(0,X,0).
