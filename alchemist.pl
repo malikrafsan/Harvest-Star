@@ -3,7 +3,7 @@
 
 potions(1, 'Red Potion', 175, 'Add 150 XP Farming').
 potions(2, 'Green Potion', 100, 'Add 50 XP Fishing').
-potions(3, 'Blue Potion', 300, 'Add 120 XP Ranching').
+potions(3, 'Blue Potion', 250, 'Add 120 XP Ranching').
 potions_exp_add(1, 150, 0, 0).
 potions_exp_add(2, 0, 50, 0).
 potions_exp_add(3, 0, 0, 120).
