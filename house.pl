@@ -80,19 +80,22 @@ readDiary :-
   isGameStarted,
   state(inHouse),!,
   write('You found some entries on diary.'), nl,
-  findall(
-    X, diary(X), List
-  ),
-  write_list_diary(List),
   (
+    findall(
+      X, diary(X), List
+    ),
+    write_list_diary(List),
     length(List, Len), Len > 0,
-    write('Choose which entries that you want to read. (1 is the most top entry)'),nl,
-    read(X), X1 is X - 1, X1 >= 0,
+    write('Choose which entries that you want to read. (1 is the most top entry, 0 to cancel)'),nl,
+    read(X),
     (
-      get_idx(List, X1, TotD), load_file(TotD), diary(TotD, Sentences),
-      write(Sentences),nl 
-    ),!;
-    write('There are no entries.'),nl
+      X == 0,!; X1 is X - 1, X1 >= 0,
+      (
+        get_idx(List, X1, TotD), load_file(TotD), diary(TotD, Sentences),
+        write(Sentences),nl 
+      ),!;
+      write('There are no entries.'),nl
+    )
   ).
 
 load_all(Stream, []):-
